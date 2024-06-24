@@ -1,0 +1,69 @@
+存在以下数据相关：
+1. 从指令 LD 到指令 DADDI 存在对寄存器 R1 的数据相关。LD 指令将 R1 从地址 0+R2 加载，然后 DADDI 指令对 R1 进行操作
+2. 从指令 LD 到指令 SD 存在对寄存器 R1 的数据相关。LD 指令加载 R1 的值，然后 SD 指令尝试将其存储回内存
+3. 从指令 DADDI 到指令 SD 存在对寄存器 R1 的数据相关。DADDI 指令对 R1 进行操作，然后 SD 指令尝试将其存储回内存
+
+b：
+Cycle 1:  | IF |    |    |    |    |
+Cycle 2:  | ID | IF |    |    |    |
+Cycle 3:  | EX | ID | IF |    |    |
+Cycle 4:  | MEM| EX | ID | IF |    |
+Cycle 5:  | WB | MEM| EX | ID | IF |
+Cycle 6:  |    | WB | MEM| EX | ID |
+Cycle 7:  |    |    | WB | MEM| EX |
+Cycle 8:  |    |    |    | WB | MEM|
+Cycle 9:  |    |    |    |    | WB |
+
+IF（指令取得）阶段：
+
+Clock Cycle 1: LD R1,0(R2)
+ID（指令译码）阶段：
+
+Clock Cycle 2: LD R1,0(R2)
+EX（执行）阶段：
+
+Clock Cycle 3: LD R1,0(R2)
+Clock Cycle 4: DADDI R1,R1,#1
+MEM（访存）阶段：
+
+Clock Cycle 5: LD R1,0(R2)
+Clock Cycle 6: DADDI R1,R1,#1
+Clock Cycle 7: SD R1,0,R2
+WB（写回）阶段：
+
+Clock Cycle 8: LD R1,0(R2)
+Clock Cycle 9: DADDI R1,R1,#1
+Clock Cycle 10: SD R1,0,R2
+Clock Cycle 11: DADDI R2,R2,#4
+Clock Cycle 12: DSUB R4,R3,R2
+Clock Cycle 13: BNEZ R4,loop
+
+c：
+以下是在拥有完整转发和旁路硬件的5级RISC流水线上执行指令序列的时序图。处理分支指令时，预测为转移不成功：
+
+```
+Cycle 1:  | IF |    |    |    |    |
+Cycle 2:  | ID | IF |    |    |    |
+Cycle 3:  | EX | ID | IF |    |    |
+Cycle 4:  | MEM| EX | ID | IF |    |
+Cycle 5:  | WB | MEM| EX | ID | IF |
+Cycle 6:  |    | WB | MEM| EX | ID |
+Cycle 7:  |    |    | WB | MEM| EX |
+Cycle 8:  |    |    |    | WB | MEM|
+Cycle 9:  |    |    |    |    | WB |
+Cycle 10: |    |    |    |    |    | LD    (预测失败)
+Cycle 11: |    |    |    |    |    | LD    (冲刷流水线)
+Cycle 12: |    |    |    |    |    | LD    (冲刷流水线)
+Cycle 13: |    |    |    |    |    | LD    (冲刷流水线)
+Cycle 14: |    |    |    |    |    | LD    (冲刷流水线)
+Cycle 15: |    |    |    |    |    | LD    (冲刷流水线)
+Cycle 16: |    |    |    |    |    | LD    (冲刷流水线)
+Cycle 17: |    |    |    |    |    | LD    (冲刷流水线)
+Cycle 18: |    |    |    |    |    | DADDI
+Cycle 19: |    |    |    |    |    | SD
+Cycle 20: |    |    |    |    |    | DADDI
+Cycle 21: |    |    |    |    |    | DSUB
+Cycle 22: |    |    |    |    |    | BNEZ
+```
+
+执行一个循环需要22个时钟周期。在时钟周期10时，分支预测失败，导致流水线被冲刷，然后从循环的开头重新执行。这是因为我们预测为转移不成功，所以需要额外的时钟周期来重新开始循环。

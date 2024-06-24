@@ -1,0 +1,539 @@
+1.	#include<iostream>  
+2.	#include<stdio.h>  
+3.	#include<string.h>  
+4.	using namespace std;  
+5.	struct usr     //用户结构体  
+6.	{  
+7.	    char username[8],password[8];  
+8.	};  
+9.	struct fnode    //文件或目录结构  
+10.	{  
+11.	    char filename[10],content[1024],address[10],protect[10];  
+12.	    int isdir,isopen,leng;  
+13.	    fnode* parent,* child,* prev,* next;  
+14.	};  
+15.	usr users[4]={"user1","user1","user2","user2","user3","user3","user4","user4"};    //预先给定的4个用户（用户名，密码）  
+16.	char para[100];    //路径  
+17.	fnode* root,* recent;     //根目录；指向路径的当前目录  
+18.	int  m=0,n=0;    //目录（文件）物理地址里的数字（例如：file0、file1、dir0...)  
+19.	int login(char*username,char*password)       //登录  
+20.	{  
+21.	    for(int i=0;i<4;i++)  
+22.	        if(strcmp(username,users[i].username)==0&&strcmp(password,users[i].password)==0)  
+23.	            {  
+24.	                cout<<"登陆成功！请输入命令"<<endl;  
+25.	                return 1;  
+26.	            }  
+27.	    return 0;  
+28.	}  
+29.	fnode* initfile(char* filename,int isdir)      //初始化文件或目录结构  
+30.	{  
+31.	    fnode* t;  
+32.	    t=new fnode;  
+33.	    strcpy(t->filename,filename);  
+34.	    t->isdir=isdir;  
+35.	    t->isopen=0;  
+36.	    t->parent=t->child=t->prev=t->next=NULL;  
+37.	    t->leng=0;  
+38.	    return t;  
+39.	}  
+40.	void creatroot()    //建立根目录  
+41.	{  
+42.	    char filename[8]="/";     //定义根目录名为"/"  
+43.	    root=initfile(filename,1);  
+44.	    recent=root;     //当前指针指向根目录  
+45.	    strcpy(para,"/");     //初始路径即为根目录  
+46.	}  
+47.	int mkdir()     //建立目录  
+48.	{  
+49.	    fnode* t,* p;  
+50.	    char filename[8];  
+51.	    cin>>filename;  
+52.	    t=initfile(filename,1);  
+53.	    if(recent->child==NULL)    //找出空的位置建立目录  
+54.	        {  
+55.	            recent->child=t;  
+56.	            t->parent=recent;  
+57.	            sprintf(t->address,"%s%d","dir",m);  
+58.	            m++;  
+59.	            cout<<"目录创建成功！"<<endl;  
+60.	        }  
+61.	    else {  
+62.	            p=recent->child;  
+63.	            do{  
+64.	                    if(strcmp(p->filename,t->filename)==0&&p->isdir)    //目录名相同  
+65.	                        {  
+66.	                            cout<<"目录已存在"<<endl;  
+67.	                            return 1;  
+68.	                        }  
+69.	                    else  if(p->next)     //继续往右边查找  
+70.	                        p=p->next;  
+71.	                    else break;    //不存在相同目录名的目录，并且找到了空位置，跳出循环建立目录  
+72.	            }while(1);  
+73.	            p->next=t;  
+74.	            t->prev=p;  
+75.	            sprintf(t->address,"%s%d","dir",m);  
+76.	            m++;  
+77.	            cout<<"目录创建成功！"<<endl;  
+78.	    }  
+79.	}  
+80.	int create()     //建立文件（同mkdir()类似）  
+81.	{  
+82.	    int flag=0;    //检查文件保护码是否正确  
+83.	    fnode* t,* p;  
+84.	    char filename[8];  
+85.	    cin>>filename;  
+86.	    t=initfile(filename,0);  
+87.	    if(recent->child==NULL)     //查找空的位置  
+88.	        {  
+89.	            recent->child=t;  
+90.	            t->parent=recent;  
+91.	            sprintf(t->address,"%s%d","file",n);  
+92.	            n++;  
+93.	            while(!flag)     //设置文件保护码  
+94.	            {  
+95.	                cout<<"请设置4位文件保护码：";  
+96.	                cin>>t->protect;  
+97.	                if(strlen(t->protect)==4)     //文件保护码为4位就设置成功  
+98.	                    flag=1;  
+99.	                else cout<<"请重新设置"<<endl;  
+100.	            }  
+101.	            cout<<"文件创建成功！"<<endl;  
+102.	        }  
+103.	    else {  
+104.	            p=recent->child;  
+105.	            do{  
+106.	                    if(strcmp(p->filename,t->filename)==0&&!p->isdir)    //文件名相同  
+107.	                        {  
+108.	                            cout<<"文件已存在"<<endl;  
+109.	                            return 1;  
+110.	                        }  
+111.	                    else  if(p->next)   //继续往右查找  
+112.	                        p=p->next;  
+113.	                    else break;     //不存在相同文件名的文件，并且找到了空位置，跳出循环建立文件  
+114.	            }while(1);  
+115.	            p->next=t;  
+116.	            t->prev=p;  
+117.	            sprintf(t->address,"%s%d","file",n);  
+118.	            n++;  
+119.	            while(!flag)     //设置文件保护码  
+120.	            {  
+121.	                cout<<"请设置4位文件保护码：";  
+122.	                cin>>t->protect;  
+123.	                if(strlen(t->protect)==4)      //文件保护码为4位就设置成功  
+124.	                    flag=1;  
+125.	                else cout<<"请重新设置"<<endl;  
+126.	            }  
+127.	            cout<<"文件创建成功！"<<endl;  
+128.	    }  
+129.	}  
+130.	void dir()     //列出当前目录中的文件和目录  
+131.	{  
+132.	    int i=0,j=0;     //目录数；文件数  
+133.	    fnode* t;  
+134.	    if(recent->child==NULL)     //该目录下没有文件或目录  
+135.	        cout<<"Total:"<<"     directors     "<<i<<"     files     "<<j<<endl;  
+136.	    else {  
+137.	        t=recent->child;  
+138.	        do{  
+139.	            if(t->isdir)    //找到目录  
+140.	            {  
+141.	                printf("%s  %s\n",t->filename,t->address);  
+142.	                i++;  
+143.	            }  
+144.	            else{       //找到文件  
+145.	                printf("%s  %s  %s%5d\n",t->filename,t->address,t->protect,t->leng);  
+146.	                j++;  
+147.	            }  
+148.	            if(t->next)     //继续往右查找  
+149.	                t=t->next;  
+150.	            else break;    //该目录下已经没有文件或目录  
+151.	        }while(1);  
+152.	        cout<<"Total:"<<"     directors     "<<i<<"     files     "<<j<<endl;  
+153.	    }  
+154.	}  
+155.	int write()     //写入文件  
+156.	{  
+157.	    fnode* t;  
+158.	    char filename[8],cinpro[10];  
+159.	    cin>>filename;  
+160.	    if(recent->child==NULL)    //该目录下没有文件  
+161.	        {  
+162.	            cout<<"文件不存在"<<endl;  
+163.	            return 1;  
+164.	        }  
+165.	    else{  
+166.	        t=recent->child;  
+167.	        do{  
+168.	                if(strcmp(t->filename,filename)==0&&t->isdir==0)   //找到文件  
+169.	                    {  
+170.	                        cout<<"请输入4位文件保护码：";  
+171.	                        cin>>cinpro;  
+172.	                        if(strcmp(cinpro,t->protect)==0)     //文件保护码正确，写入文件内容  
+173.	                        {  
+174.	                            cout<<"请输入文件内容："<<endl;  
+175.	                            cin>>t->content;  
+176.	                            t->leng=strlen(t->content);  
+177.	                            cout<<"写入成功！"<<endl;  
+178.	                            return 1;  
+179.	                        }  
+180.	                        else{  
+181.	                            cout<<"输入有误，无法进行写入操作"<<endl;  
+182.	                            return 1;  
+183.	                        }  
+184.	                    }  
+185.	                else if(t->next)  
+186.	                            t=t->next;  
+187.	                else {  
+188.	                            cout<<"文件不存在"<<endl;  
+189.	                            return 1;  
+190.	                    }  
+191.	        } while(1);     
+192.	    }  
+193.	}  
+194.	int read()    //读取文件（同write()类似）  
+195.	{  
+196.	    fnode* t;  
+197.	    char filename[8],cinpro[10];  
+198.	    cin>>filename;  
+199.	    if(recent->child==NULL)  
+200.	        {  
+201.	            cout<<"文件不存在"<<endl;  
+202.	            return 1;  
+203.	        }  
+204.	    else{  
+205.	        t=recent->child;  
+206.	        do{  
+207.	                if(strcmp(t->filename,filename)==0&&t->isdir==0)  
+208.	                    {  
+209.	                        cout<<"请输入4位文件保护码：";  
+210.	                        cin>>cinpro;  
+211.	                        if(strcmp(cinpro,t->protect)==0)  
+212.	                        {  
+213.	                            cout<<"文件内容："<<endl;  
+214.	                            cout<<t->content<<endl;  
+215.	                            return 1;  
+216.	                        }  
+217.	                        else{  
+218.	                            cout<<"输入有误，无法进行读取操作"<<endl;  
+219.	                            return 1;  
+220.	                        }  
+221.	                    }  
+222.	                else if(t->next)  
+223.	                            t=t->next;  
+224.	                else {  
+225.	                            cout<<"文件不存在"<<endl;  
+226.	                            return 1;  
+227.	                    }  
+228.	        } while(1);     
+229.	    }  
+230.	}  
+231.	int cd()     //打开目录  
+232.	{  
+233.	    char topara[30];  
+234.	    cin>>topara;  
+235.	    if(strcmp(topara,"..")==0)      //返回上级目录  
+236.	    {  
+237.	        int i;  
+238.	        while(recent->prev)      //如果有prev指针，不断往左挪动  
+239.	            recent=recent->prev;  
+240.	        if(recent->parent)     //找到上级目录  
+241.	            recent=recent->parent;  
+242.	        i=strlen(para)-1;      //更新路径  
+243.	        while(para[i]!='/'&&i>=0)  
+244.	            i--;  
+245.	        if(i!=0)  
+246.	            para[i]='\0';      //去掉路径中的"/"，并且置一位'\0'  
+247.	        else para[i+1]='\0';    //上级目录为根目录  
+248.	    }  
+249.	    else if(strcmp(topara,"/")==0)       //打开根目录  
+250.	    {  
+251.	        recent=root;  
+252.	        strcpy(para,"/");  
+253.	    }  
+254.	    else if(topara[0]=='/')      //打开路径以'/'开头，就从根目录开始查找路径  
+255.	    {  
+256.	        fnode* saver;  
+257.	        char savep[100];  
+258.	        int leng=strlen(topara),i=1;  
+259.	        saver =recent;     //保存当前指向的目录  
+260.	        strcpy(savep,para);     //保存当前路径  
+261.	        recent=root;  
+262.	        strcpy(para,"/");  
+263.	        while(i<leng)    //topara需要打开的路径头从开始查找  
+264.	            {  
+265.	                fnode* t;  
+266.	                int j=0;  
+267.	                char recentpara[8];     //查找的当前目录  
+268.	                if(topara[i]!='/')  
+269.	                {  
+270.	                    while(topara[i]!='/'&&i<leng)     //读取出当前目录  
+271.	                    {  
+272.	                        recentpara[j]=topara[i];  
+273.	                        i++,j++;  
+274.	                    }  
+275.	                    recentpara[j]='\0';  
+276.	                    if(recent->child==NULL)     //查找路径中的当前目录下没有目录  
+277.	                        {  
+278.	                            cout<<"路径错误"<<endl;  
+279.	                            recent=saver;      //还原当前目录  
+280.	                            stpcpy(para,savep);     //还原路径  
+281.	                            return 1;  
+282.	                        }  
+283.	                    else{      //继续查找  
+284.	                        t=recent->child;  
+285.	                        do{  
+286.	                            if(strcmp(t->filename,recentpara)==0&&t->isdir)    //找到需要打开的目录  
+287.	                                {  
+288.	                                    recent=t;  
+289.	                                    strcat(para,recentpara);      //更新路径  
+290.	                                    break;  
+291.	                               }  
+292.	                            else if(t->next)  
+293.	                                t=t->next;  
+294.	                            else {          //找不到目录  
+295.	                                cout<<"路径错误"<<endl;;  
+296.	                                recent=saver;  
+297.	                                stpcpy(para,savep);  
+298.	                                return 1;  
+299.	                            }  
+300.	                        }while(1);  
+301.	                    }  
+302.	                }  
+303.	                else{      //读取到需要打开的目录中的'/'，更新路径  
+304.	                    strcat(para,"/");  
+305.	                    i++;    //继续读取下一位  
+306.	                }  
+307.	            }  
+308.	    }  
+309.	    else{      //需要打开的目录不以'/'开头（与上面类似）  
+310.	        int i=0,leng=strlen(topara),flag=0;  
+311.	        fnode* saver;  
+312.	        char savep[100];  
+313.	        saver=recent;  
+314.	        strcpy(savep,para);  
+315.	            while(i<leng)  
+316.	            {  
+317.	                int j=0;  
+318.	                char recentpara[8];  
+319.	                fnode* t;  
+320.	                if(topara[i]!='/')  
+321.	                {  
+322.	                    while(topara[i]!='/'&&i<leng)  
+323.	                    {  
+324.	                        recentpara[j]=topara[i];  
+325.	                        i++,j++;  
+326.	                    }  
+327.	                    recentpara[j]='\0';  
+328.	                    if(recent->child==NULL)  
+329.	                    {  
+330.	                        cout<<"路径错误"<<endl;  
+331.	                        recent=saver;  
+332.	                        stpcpy(para,savep);  
+333.	                        return 1;  
+334.	                    }  
+335.	                    else{  
+336.	                        t=recent->child;  
+337.	                        do{  
+338.	                            if(strcmp(t->filename,recentpara)==0&&t->isdir)  
+339.	                            {  
+340.	                                if(!flag&&recent!=root)  
+341.	                                    strcat(para,"/");  
+342.	                                flag++;  
+343.	                                recent=t;  
+344.	                                strcat(para,recentpara);  
+345.	                                break;  
+346.	                            }  
+347.	                            else if(t->next)  
+348.	                                t=t->next;  
+349.	                            else {  
+350.	                                cout<<"路径错误"<<endl;  
+351.	                                recent=saver;  
+352.	                                stpcpy(para,savep);  
+353.	                                return 1;  
+354.	                            }  
+355.	                        }while(1);  
+356.	                    }  
+357.	                }  
+358.	                else{  
+359.	                    strcat(para,"/");  
+360.	                    i++;  
+361.	                }  
+362.	            }  
+363.	    }  
+364.	}  
+365.	int del()    //删除文件或目录  
+366.	{  
+367.	    fnode* t;  
+368.	    char filename[8];  
+369.	    cin>>filename;  
+370.	    if(recent->child==NULL)  
+371.	        cout<<"文件或目录不存在"<<endl;  
+372.	    else {  
+373.	        t=recent->child;  
+374.	        do{  
+375.	            if(strcmp(t->filename,filename)==0)     //找到该文件或目录，分文件储存结构进行删除  
+376.	            {  
+377.	                if(t->parent)  
+378.	                {  
+379.	                    if(t->next)  
+380.	                        t->next->parent=t->parent;  
+381.	                    t->parent->child=t->next;  
+382.	                    delete t;  
+383.	                    cout<<"文件或目录删除成功"<<endl;  
+384.	                    return 1;  
+385.	                }  
+386.	                else {  
+387.	                    if(t->next)  
+388.	                        t->next->prev=t->prev;  
+389.	                    t->prev->next=t->next;  
+390.	                    delete t;  
+391.	                    cout<<"文件或目录删除成功"<<endl;  
+392.	                    return 1;  
+393.	                }  
+394.	            }  
+395.	            else if(t->next)  
+396.	                t=t->next;  
+397.	            else{  
+398.	                cout<<"文件或目录不存在"<<endl;  
+399.	                return 1;  
+400.	            }  
+401.	        }while(1);  
+402.	    }  
+403.	}  
+404.	int open()     //打开文件  
+405.	{  
+406.	    fnode* t;  
+407.	    char filename[8];  
+408.	    cin>>filename;  
+409.	    if(recent->child==NULL)  
+410.	        cout<<"文件不存在"<<endl;  
+411.	    else {  
+412.	        t=recent->child;  
+413.	        do{  
+414.	            if(strcmp(t->filename,filename)==0&&!t->isdir)  
+415.	                {  
+416.	                    t->isopen=1;     //文件打开标记  
+417.	                    cout<<"文件打开成功！"<<endl;  
+418.	                    return 1;  
+419.	                }  
+420.	            else if(t->next)  
+421.	                t=t->next;  
+422.	            else {  
+423.	                cout<<"文件不存在"<<endl;  
+424.	                return 1;  
+425.	            }  
+426.	        }while(1);  
+427.	    }  
+428.	}  
+429.	int close()     //关闭文件（与open()类似）  
+430.	{      
+431.	    fnode* t;  
+432.	    char filename[8];  
+433.	    cin>>filename;  
+434.	    if(recent->child==NULL)  
+435.	        cout<<"文件不存在"<<endl;  
+436.	    else {  
+437.	        t=recent->child;  
+438.	        do{  
+439.	            if(strcmp(t->filename,filename)==0&&!t->isdir)  
+440.	                {  
+441.	                    t->isopen=0;  
+442.	                    cout<<"文件关闭成功！"<<endl;  
+443.	                    return 1;  
+444.	                }  
+445.	            else if(t->next)  
+446.	                t=t->next;  
+447.	            else {  
+448.	                cout<<"文件不存在"<<endl;  
+449.	                return 1;  
+450.	            }  
+451.	        }while(1);  
+452.	    }  
+453.	}  
+454.	void help()    //命令浏览  
+455.	{  
+456.	    cout<<endl<<"                命令一览                "<<endl;  
+457.	    cout<<"     ---------------------------------    "<<endl;  
+458.	    cout<<"         mkdir  :  新建目录         "<<endl;  
+459.	    cout<<"         create :  新建文件         "<<endl;  
+460.	    cout<<"         write  :  写入文件         "<<endl;  
+461.	    cout<<"         read   :  读出文件         "<<endl;  
+462.	    cout<<"         cd     :  列文件目录         "<<endl;  
+463.	    cout<<"         open   :  打开文件         "<<endl;  
+464.	    cout<<"         close  :  打开文件         "<<endl;  
+465.	    cout<<"         del    :  删除文件或目录         "<<endl;  
+466.	    cout<<"         dir    :  列文件目录         "<<endl;  
+467.	    cout<<"         quit   :  退出系统         "<<endl<<endl;  
+468.	}  
+469.	int run()     //运行文件系统  
+470.	{  
+471.	    char command[10];  
+472.	    cout<<"Linux:"<<para<<">";     //显示路径  
+473.	    cin>>command;       //输入命令  
+474.	    if(strcmp(command,"help")==0)  
+475.	        help();  
+476.	    else if(strcmp(command,"mkdir")==0)  
+477.	            mkdir();  
+478.	    else if(strcmp(command,"create")==0)  
+479.	            create();  
+480.	    else if(strcmp(command,"dir")==0)  
+481.	            dir();  
+482.	    else if(strcmp(command,"write")==0)  
+483.	            write();  
+484.	    else if(strcmp(command,"read")==0)  
+485.	            read();  
+486.	    else if(strcmp(command,"cd")==0)  
+487.	            cd();  
+488.	    else if(strcmp(command,"del")==0)  
+489.	            del();  
+490.	    else if(strcmp(command,"open")==0)  
+491.	            open();  
+492.	    else if(strcmp(command,"close")==0)  
+493.	            close();  
+494.	    else if(strcmp(command,"quit")==0)  
+495.	            return 0;  
+496.	    else cout<<"请参考help提供的命令列表"<<endl;  
+497.	}  
+498.	int main()  
+499.	{  
+500.	    int flag;     //标记用户名密码是否正确  
+501.	    char username[8],password[8];  
+502.	    cout<<"              -----------------------------------------------             "<<endl;  
+503.	    cout<<"                           +++Linux文件系统+++                      "<<endl;  
+504.	    cout<<"                   账号：user1-user4   密码：user1-user4                   "<<endl;  
+505.	    cout<<"                                mkdir  目录名                                 "<<endl;  
+506.	    cout<<"                                create 文件名                                 "<<endl;  
+507.	    cout<<"                                write  文件名                                 "<<endl;  
+508.	    cout<<"                                read   文件名                                 "<<endl;  
+509.	    cout<<"                                cd     目录名                                 "<<endl;  
+510.	    cout<<"                                open   文件名                                 "<<endl;  
+511.	    cout<<"                                close  文件名                                 "<<endl;  
+512.	    cout<<"                                del    文件名或目录名                     "<<endl;  
+513.	    cout<<"                                dir                                 "<<endl;  
+514.	    cout<<"                                quit                                 "<<endl;  
+515.	    cout<<"                             输入help可获得帮助                             "<<endl;  
+516.	    cout<<"              -----------------------------------------------             "<<endl;  
+517.	    cout<<"请输入您的用户名：";  
+518.	    cin>>username;  
+519.	    cout<<"请输入您的密码：";  
+520.	    cin>>password;  
+521.	    flag=login(username,password);    //检验用户输入用户名密码是否正确  
+522.	    while(!flag)  
+523.	    {  
+524.	        cout<<"用户名或密码错误，请重新输入"<<endl;  
+525.	        cout<<"请输入您的用户名：";  
+526.	        cin>>username;  
+527.	       cout<<"请输入您的密码：";  
+528.	       cin>>password;  
+529.	       flag=login(username,password);  
+530.	    }  
+531.	    if(flag)      //登录成功就会建立一个根目录  
+532.	        creatroot();  
+533.	    while(flag)  
+534.	    {  
+535.	        if(!run())    //退出系统  
+536.	            break;  
+537.	    }  
+538.	} 
+

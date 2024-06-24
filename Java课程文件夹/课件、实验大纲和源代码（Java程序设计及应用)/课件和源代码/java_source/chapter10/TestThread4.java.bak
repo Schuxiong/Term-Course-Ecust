@@ -1,0 +1,87 @@
+
+class Ticket
+{
+	public int num=0;
+	public Ticket(int num){this.num=num;}
+}
+
+class Booking1 implements Runnable{ 
+	public Ticket ticket=null; 
+	public Object synchronizedObject=null;
+	public Booking1( ){ 		} 
+	public void run(){ 
+		int temNum=0;
+		System.out.println("this object:"+this);
+		//synchronized(synchronizedObject){   //对象同步 （锁)
+			 System.out.println("this object:"+this+"  synchronizedObject:"+synchronizedObject+" sleep begin:"); 
+
+			 temNum=ticket.num;
+		      
+		     try{  
+		         Thread.sleep(1000);
+		        }catch(Exception e){
+		         }
+
+			 ticket.num=temNum-1;
+
+			System.out.println("this object:"+this+"  synchronizedObject:"+synchronizedObject+" sleep end"); 
+		//}
+	}
+}
+
+class Booking2 implements Runnable{ 
+	public Ticket ticket=null; 
+	public Object synchronizedObject=null;
+	public Booking2( ){ 		} 
+	public void run(){ 
+		int temNum=0;
+		System.out.println("this object:"+this);
+		//synchronized(synchronizedObject){   //对象同步 （锁)
+			 System.out.println("this object:"+this+"  synchronizedObject:"+synchronizedObject+" sleep begin:"); 
+
+			 temNum=ticket.num;
+		      
+		     try{  
+		         Thread.sleep(100 );
+		        }catch(Exception e){
+		         }
+
+			 ticket.num=temNum-1;
+
+			System.out.println("this object:"+this+"  synchronizedObject:"+synchronizedObject+" sleep end"); 
+		//}
+	}
+}
+
+public class  TestThread4{
+	public static void main(String[] args)	{	
+	   Ticket ticket=new Ticket(100); 
+       Object synchronizedObject=new Object();
+	   Booking1 booking1=new Booking1( ); 	   
+	   Booking2 booking2=new Booking2( );
+	   booking1.ticket=ticket; booking2.ticket=ticket;//共享数据
+
+       booking1.synchronizedObject=synchronizedObject; 
+	   booking2.synchronizedObject=synchronizedObject;//一定要是同一把锁。
+
+       Object synchronizedObject2=new Object();
+      // booking2.synchronizedObject=synchronizedObject2;//不是同一把锁,有问题,所以要注释掉。
+     
+       Thread thread1=new Thread(booking1,"thread1");
+	   thread1.start();
+	   Thread thread2=new Thread(booking2,"thread2"); 
+	   thread2.start();
+
+	   try{
+		   thread1.join();
+		   thread2.join();
+	   }catch(Exception e){
+	   }
+	    
+	      
+	   System.out.println("booking1.ticket.num: "+booking1.ticket.num);
+	   System.out.println("booking2.ticket.num: "+booking2.ticket.num);
+	   System.out.println( "ticket.num: "+ticket.num);
+	  
+	}
+}

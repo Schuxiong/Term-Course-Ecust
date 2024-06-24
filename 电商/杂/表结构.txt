@@ -1,0 +1,26 @@
+
+MTABLE_E-finance
+ParentMaterial	varchar(50)
+SubMaterial	varchar(50)
+AllocatType	varchar(50)
+Component	int
+lossrate	float
+ProcessInventory	int
+MaterialInventory	int
+OPleadtime	int
+ITemleadtime	int
+Supleadtime	int
+[UDF-1]	varchar(50)
+[UDF-2]	varchar(50)
+[UDF-3]	varchar(50)
+	 
+Orderlist
+OrderID	int
+Product_Name	varchar(50)
+Account_Need	varchar(50)
+Departure_Time	varchar(50)
+Time	date
+[UDF-1]	varchar(50)
+[UDF-2]	varchar(50)
+	
+		
