@@ -1,0 +1,94 @@
+/*
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define MAXSIZE 10000
+
+struct Queue 
+{
+	int data[MAXSIZE];
+	int front, rear;
+}Q;
+
+bool Visited[MAXSIZE]; //标记数组
+
+void InQueue(int x)   //入队操作
+{
+	Q.data[Q.rear] = x;
+	Q.rear++;
+}
+
+int DeQueue() //出队操作
+{
+	int x = Q.data[Q.front];
+	Q.front++;
+	return x; //返回出队的值
+}
+
+int SDS_BFS(int** G, int v, int Nv) //六度空间广度遍历
+{
+	int cnt = 1, level = 0, last = v, tail;//cnt-结点计数，level-层数
+	int i;
+	for (i = 0; i < v; i++)
+	{
+		Visited[i] = false;
+	}
+	Q.front = Q.rear = 0;//清空结点标记
+
+	Visited[v] = true;
+	InQueue(v);
+	while (Q.front < Q.rear)
+	{
+		int k = DeQueue();
+		for (i = 0; i < v; i++)
+		{
+			if (G[k][i] && Visited[i] == false)
+			{
+				Visited[i] = true;
+				InQueue(i);
+				cnt++;
+				tail = i;
+			}
+		}
+		if (k == last)
+		{
+			level++;
+			last = tail;
+		}
+		if (level == 6)
+		{
+			break;//达成条件
+		}
+	}
+	return cnt;
+}
+
+int main()
+{
+	int i, E1, E2;
+	int Nv;//节点数
+	int Ne;//边数
+	scanf_s("%d %d", &Nv, &Ne);
+	int** G = (int**)malloc((Nv + 1) * sizeof(int*));//图指针的初始化
+
+	for (i = 0; i < Nv; i++)
+	{
+		G[i] = (int*)malloc((Nv + 1) * sizeof(int));
+		memset(G[i], 0, sizeof(int) * (Nv + 1));
+		//初始化数组
+	}
+
+	for (i = 0; i < Ne; i++)
+	{
+		scanf_s("%d %d", &E1, &E2);
+		G[E1 - 1][E2 - 1] = 1;
+		G[E2 - 1][E2 - 1] = 1;
+	}
+
+	for (i = 0; i < Nv; i++)
+	{
+		int count = SDS_BFS(G, i, Nv);
+		printf("%d: %.2lf%%\n", i + 1, 100.0 * (double)count / (double)Nv);
+	}
+	return 0;
+}*/
