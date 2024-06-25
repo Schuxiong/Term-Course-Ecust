@@ -1,0 +1,123 @@
+import copy
+import time
+
+def PowerSetsBinary(items):
+    #生成集合的所有子集。遍历集合中的所有可能的组合来生成子集。
+    N = len(items)
+    for i in range(2 ** N): #范围包含了所有可能的子集的索引。
+        combo = []
+        for j in range(N):
+            if (i >> j) % 2 == 1:
+                combo.append(items[j])
+        yield combo #一个生成器
+
+def loadDataSetFromFile(filename):
+    #从文件中加载数据集。文件中每行的项用空格分隔。
+    dataSet = []
+    with open(filename, 'r') as file:
+        for line in file:
+            transaction = list(map(int, line.strip().split()))
+            dataSet.append(transaction)
+    return dataSet
+
+def createC1(dataSet):
+    #创建初始候选项集的列表，即所有候选项集只包含一个元素。
+    C1 = [] #创建一个空的列表 C1，用于存储候选项集。
+    for transaction in dataSet: #遍历交易
+        for item in transaction: #遍历项
+            if [item] not in C1:
+                C1.append([item])
+    C1.sort()
+    return [frozenset(var) for var in C1] #不可变集合 frozenset，然后返回结果列表
+
+def scanDataSet(D, Ck, minSupport):
+    #计算候选项集Ck中的项集在数据集合D中的支持度 返回满足最小支持度的项集的集合 以及所有项集支持度信息的字典。
+    subSetCount = {}
+    #初始化一个空的字典 存储候选项集在数据集中出现的次数。
+    for tid in D:
+        for can in Ck:
+            if can.issubset(tid):
+                subSetCount[can] = subSetCount.get(can, 0) + 1
+    numItems = float(len(D))
+    returnList = []
+    supportData = {}
+
+    for key in subSetCount:
+        support = subSetCount[key] / numItems
+        if support >= minSupport:
+            returnList.insert(0, key)
+        supportData[key] = support #支持度>=最小支持度阈值的项集留下
+
+    return returnList, supportData
+
+def aprioriGen(Lk, k):
+    #由初始候选项集的集合Lk生成新的候选项集，k表示生成的新项集中所含有的元素个数。
+    returnList = []
+    #创建一个空的列表 用于存储生成的新的候选项集。
+    for i in range(len(Lk)):
+        L1 = list(Lk[i])[: k - 2]
+        for j in range(i + 1, len(Lk)):
+            L2 = list(Lk[j])[: k - 2]
+            L1.sort()
+            L2.sort()
+            if L1 == L2:
+                returnList.append(Lk[i] | Lk[j])
+    return returnList
+
+def has_infrequent_subset(L, Ck, k):
+    #这个函数用于剪枝，即去除候选项集中包含非频繁子集的项集。
+    Ckc = copy.deepcopy(Ck)
+    for i in Ck:
+        p = [t for t in i]
+        i_subset = PowerSetsBinary(p)
+        subsets = [i for i in i_subset]
+        for each in subsets: #遍历剪枝
+            #子集不为空 不等于原始项 len<k 
+            if each != [] and each != p and len(each) < k:
+                if frozenset(each) not in [t for z in L for t in z]:
+                    Ckc.remove(i)
+                    break
+    return Ckc
+
+def apriori(dataSet, minSupport):
+    #先生成初始候选项集C1，
+    #然后逐步生成更大的候选项集并剪枝，直到不能再生成新的候选项集为止。
+    #最后返回所有满足条件的频繁项集的列表，以及所有候选项集的支持度信息和执行时间。
+    start_time = time.time()
+    C1 = createC1(dataSet)
+    D = [set(var) for var in dataSet]
+    L1, suppData = scanDataSet(D, C1, minSupport)
+    L = [L1]
+    k = 2
+
+    #迭代生成频繁项集：
+    while len(L[k - 2]) > 0:
+        Ck = aprioriGen(L[k - 2], k)
+        Ck2 = has_infrequent_subset(L, Ck, k)
+        Lk, supK = scanDataSet(D, Ck2, minSupport)
+        suppData.update(supK)
+        L.append(Lk)
+        k += 1
+    end_time = time.time()
+    execution_time = end_time - start_time
+    return L[:-1], suppData, execution_time
+
+def count_itemsets(frequent_itemsets):
+    for i, itemsets in enumerate(frequent_itemsets):
+        print(f"{i + 1} {len(itemsets)}")
+
+def save_frequent_itemsets(frequent_itemsets, output_file):
+    with open(output_file, 'w') as file:
+        for itemsets in frequent_itemsets:
+            for itemset in itemsets:
+                file.write("{" + ','.join(map(str, itemset)) + "}\n")
+
+if __name__ == '__main__':
+    filename = r"C:\Users\74140\Desktop\sjwj\PythonApplication1\PythonApplication1\T1014D1K.dat"
+    myDat = loadDataSetFromFile(filename)
+    L, suppData, execution_time = apriori(myDat, 6 / len(myDat))
+    frequent_itemsets = [sorted(list(itemset)) for itemset in L]
+    output_file = f"{filename}_support_6.txt"
+    save_frequent_itemsets(frequent_itemsets, output_file)
+    count_itemsets(frequent_itemsets)
+    print(f"Execution Time: {execution_time} seconds")

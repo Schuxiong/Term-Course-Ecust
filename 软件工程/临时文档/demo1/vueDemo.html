@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>轮播示例</title>
+  <style>
+    body,
+    html {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .carousel-wrapper {
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+
+    }
+
+    .list-container {
+      float: left;
+      width: 200px;
+
+      box-sizing: border-box;
+      padding: 20px;
+      height: 100%;
+    }
+
+    .list {
+      padding: 20px;
+      list-style: none;
+      margin: 20;
+      border: 2px solid #ccc;
+      height: 100%;
+    }
+
+    .list-item {
+      padding: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      border-bottom: 2px solid #ccc;
+    }
+
+    .list-item:hover {
+      background-color: #f0f0f0;
+    }
+
+    .arrow {
+      display: none;
+    }
+
+    .list-item:hover .arrow {
+      display: inline-block;
+    }
+
+    .arrow::after {
+      content: '\2192';
+      margin-left: 5px;
+    }
+
+    .carousel-container {
+      float: left;
+      width: 200px;
+
+      box-sizing: border-box;
+      padding: 20px;
+      height: 100%;
+    }
+
+    .slides {
+      display: flex;
+      text-align: center;
+      flex-direction: column;
+      margin: 20;
+      padding: 30px;
+      transition: transform 0.5s ease;
+      height: 100%;
+    }
+
+    .slide {
+      text-align: center;
+      display: none;
+      margin: 20;
+      padding-top: 70px;
+      padding-bottom: 70px;
+
+      border: 2px solid #ccc;
+    }
+
+    .return-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 10px;
+      background-color: #ccc;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="app">
+    <button class="return-button" @click="returnHome">返回首页</button>
+
+    <div class="container">
+      <div class="carousel-wrapper">
+        <div class="list-container">
+          <ul class="list">
+            <li class="list-item" v-for="(item, index) in items" :key="index" @mouseenter="stopCarousel(index)"
+              @mouseleave="startCarousel">{{ item.name }}<span class="arrow"></span></li>
+          </ul>
+        </div>
+        <div class="carousel-container">
+          <div class="slides">
+            <div class="slide" v-for="(item, index) in items" :key="index">{{ item.name }}</div>
+          </div>
+        </div>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data() {
+        return {
+          items: [
+            { name: 'Lucas' },
+            { name: 'Aki' },
+            { name: 'Jessica' }
+          ],
+          currentIndex: 0,
+          intervalId: null
+        };
+      },
+      methods: {
+        updateSlidePosition() {
+          const slides = document.querySelector('.slides');
+          const slideWidth = slides.clientHeight;
+          slides.style.transform = `translateY(-${this.currentIndex * slideWidth}px)`;
+        },
+        showCurrentSlide() {
+          const slides = document.querySelector('.slides');
+          const currentSlide = slides.children[this.currentIndex];
+          currentSlide.style.display = 'block';
+        },
+        hideAllSlides() {
+          const slides = document.querySelector('.slides');
+          const allSlides = slides.children;
+          for (let i = 0; i < allSlides.length; i++) {
+            allSlides[i].style.display = 'none';
+          }
+        },
+        startCarousel() {
+          this.intervalId = setInterval(() => {
+            this.hideAllSlides();
+            this.currentIndex = (this.currentIndex + 1) % this.items.length;
+            this.showCurrentSlide();
+          }, 1000);
+        },
+        stopCarousel(index) {
+          clearInterval(this.intervalId);
+          this.currentIndex = index;
+          this.showCurrentSlide();
+        },
+        returnHome() {
+          window.location.href = 'demo.html';
+        }
+      },
+      mounted() {
+        this.startCarousel();
+      }
+    });
+  </script>
+
+</body>
+
+</html>

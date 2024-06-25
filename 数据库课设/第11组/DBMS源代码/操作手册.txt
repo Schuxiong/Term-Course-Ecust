@@ -1,0 +1,32 @@
+1.系统启动：  右键运行iDB/src/view/Start.java'
+2.用户登录：  账号密码在iDB/config/user 中，格式为  用户名-密码-是否为管理员（1是0否）-权限
+3.演示：
+①创建数据库：create database test;
+       
+②使用新数据库：use test;
+       
+③创建表stu1的表结构：
+
+create table stu1 ( sname String(9), age int(4), class String(4), grade double(8));	  
+create table stu2 ( sname String(9), age int(4), class String(4), grade double(8));	  
+       
+④查询表stu1：select * from stu1;
+       
+⑤新增数据：
+			Insert INTO stu1 (sname,age,class,grade) values ('张11',16,'2023',95);       //没有赋值的设为默认值
+			Insert INTO stu1 (sname,class,grade) values ('张12','2023',85);                  //整形默认值0
+			Insert INTO stu1 (sname,age,class) values ('张13',17,'2024');                     //double默认 0.0
+			Insert INTO stu1 (sname,age,grade) values ('张14',18,65);                         //字符串默认“”
+			Insert INTO stu1 (sname,age,class,grade) values ('张15',15,'2024',65);
+  
+⑥查询表：		
+			select * from stu1 where age < 18;      //可判断①字符串相等、       ②整形/浮点型大于、小于、等于、不等于
+			select  sname, age, grade from stu1 where class = '2019';
+       
+⑦删除数据并查询：
+			DELETE FROM stu1 WHERE sname = '张11';
+			select * from stu1;
+	  
+⑧更新数据并查询：
+	   		UPDATE stu1 SET class = '2023' WHERE grade > 75;
+			select * from stu1;

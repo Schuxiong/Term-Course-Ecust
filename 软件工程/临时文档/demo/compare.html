@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Comparison</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Code Comparison</h1>
+    <textarea id="code1" placeholder="Enter code 1"></textarea>
+    <textarea id="code2" placeholder="Enter code 2"></textarea>
+    <button onclick="compareCode()">Compare Code</button>
+    <div id="output"></div>
+
+    <script>
+        function compareCode() {
+            const code1 = $('#code1').val();
+            const code2 = $('#code2').val();
+
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost:5500/compare',
+                contentType: 'text/plain',
+                data: JSON.stringify({ code1, code2 }),
+                success: function(response) {
+                    displayDiff(response);
+                }
+            });
+        }
+
+        function displayDiff(diff) {
+            let markedCode = '';
+            diff.forEach(part => {
+                const color = part.added ? 'green' : part.removed ? 'red' : 'black';
+                markedCode += `<span style="color: ${color}">${part.value}</span><br>`;
+            });
+            $('#output').html(markedCode);
+        }
+    </script>
+</body>
+</html>
