@@ -1,0 +1,34 @@
+- navicat不能连接mysql，提示Client does not support authentication protocol requested by server
+	- 进入Mysql安装目录下的bin目录，例如 C:\Program Files\MySQL\MySQL Server 8.0\bin
+	- 路径框中输入cmd以打开命令提示符
+	- 输入 mysql -u root -p	此时会提示你输密码，输入MySQL密码，从而由DOS进入MySQL
+	- 输入 use mysql
+	- 输入 alter user 'root'@'localhost' identified with mysql_native_password by '你的密码'; （分号不能忘记）
+	- 输入 flush privileges;（分号不能忘记）
+	- 重新通过navicat连接，即可成功
+
+- spring启动不起来，build错误
+	- 请检查数据库，检查数据库名是否为root，数据库密码是否为root，如不是，请进入restDemo/be-spring/src/main/resources/application.properties，修改相应字段
+
+- spring启动不起来，报错“... port is aleady used”
+	- kill占用该端口的进程，或者重启电脑解决
+	
+- 进入页面，提示“获取后台数据失败”
+	- 请优先检查后台是否开启（是否误关命令行）
+	- 其次检查前端代码，进入restfulDemo/fe/my-app/src/setupProxy.js，检查target字段，是否为'http://127.0.0.1:7001' （egg.js）或'http://127.0.0.1:8080' （tomcat）
+	- 再进入restfulDemo/fe/my-app/src/App.jsx，检查 useApi 是=api1 还是=api2
+
+- 前端启动不起来
+	- 先确认自己用的是 yarn 还是 npm ，切忌混用
+	- 如果是用npm，启动命令为 npm run start
+	- 如果是用yarn，启动命令为 yarn run start
+- 数据库
+	- 需设置字符集 utf-8 与 utf_general_ci
+
+- 检查maven安装情况
+	- 用 mvn -v 或 mvn -V，看环境是否安装好，有错误可忽略
+
+- 数据库数据对不齐的情况
+	- 前端检查setupProxy.js文件，target是否为http://127.0.0.1:xxxx（注意，修改该文件需重启前端服务）
+	- 前端检查App.jsx中，请求api是否设置正确
+	- 如果后台是egg起的，检检查config.default.js文件中的config.sequelize中的host字段是否为 '127.0.0.1'

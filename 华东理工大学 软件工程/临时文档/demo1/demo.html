@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Demo</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .home {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f0f0f0;
+    }
+
+    .entry {
+      margin: 20px;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: greenyellow;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .entry1 {
+      margin: 20px;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: skyblue;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .entry2 {
+      margin: 20px;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: pink;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .entry:hover {
+      transform: translateY(-5px);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="home">
+    <a href="./jsDemo.html" class="entry">Javascript</a>
+    <a href="./jQueryDemo.html" class="entry1">jQuery</a>
+    <a href="./vueDemo.html" class="entry2">Vue</a>
+  </div>
+</body>
+
+</html>

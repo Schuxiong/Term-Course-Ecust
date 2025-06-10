@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>pygame.geometry &#8212; pygame-ce v2.4.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygame.css?v=9dcf9b85" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=cb910dc7"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/script.js?v=57918e6b"></script>
+    <link rel="icon" href="../_static/pygame.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pygame.gfxdraw" href="gfxdraw.html" />
+    <link rel="prev" title="pygame.freetype" href="freetype.html" /> 
+  </head><body>  
+
+    <div class="document">
+
+  <div class="header">
+	<div class="flex-container">
+	<div class="logo">
+	  <a href="https://pyga.me/docs">
+	    <img src="../_static/pygame_tiny.png"/>
+	  </a>
+	  <h5>pygame-ce documentation</h5>
+	</div>
+	<div class="pagelinks">
+	  <div class="top">
+      <div class="nav-top-wrapper">
+        <a href="https://pyga.me/docs">Pygame-ce Home</a> ||
+        <a href="../index.html">Help Contents</a> ||
+        <a href="../genindex.html">Reference Index</a>
+      </div>
+      <div class="searchbar-container">
+        <img class="theme-icon" data-theme="dark-theme" src="../_static/light-theme-icon.svg" width="24" height="24" alt="Light Theme Icon">
+        <img class="theme-icon" data-theme="light-theme" src="../_static/dark-theme-icon.svg" width="24" height="24" alt="Dark Theme Icon">
+        <form action="../search.html" method="get" class="searchbar-form" style="display:inline;float:right;">
+          <input name="q" value="" type="text">
+          <img class="searchbar-button" src="../_static/searchbar-icon.svg" alt="Search">
+          <input class="searchbar-submit" value="search" type="submit">
+        </form>
+      </div>
+	  </div>
+	  <hr style="color:black;border-bottom:none;border-style: dotted;border-bottom-style:none;">
+	  <p class="bottom"><b>Most useful stuff</b>:
+	    <a href="color.html">Color</a> | 
+	    <a href="display.html">display</a> | 
+	    <a href="draw.html">draw</a> | 
+	    <a href="event.html">event</a> | 
+	    <a href="font.html">font</a> | 
+	    <a href="image.html">image</a> | 
+	    <a href="key.html">key</a> | 
+	    <a href="locals.html">locals</a> | 
+	    <a href="mixer.html">mixer</a> | 
+	    <a href="mouse.html">mouse</a> | 
+	    <a href="rect.html">Rect</a> | 
+	    <a href="surface.html">Surface</a> | 
+	    <a href="time.html">time</a> | 
+	    <a href="music.html">music</a> | 
+	    <a href="pygame.html">pygame</a>
+	  </p>
+
+	  <p class="bottom"><b>Advanced stuff</b>:
+	    <a href="cursors.html">cursors</a> | 
+	    <a href="joystick.html">joystick</a> | 
+	    <a href="mask.html">mask</a> | 
+	    <a href="sprite.html">sprite</a> | 
+	    <a href="transform.html">transform</a> | 
+	    <a href="bufferproxy.html">BufferProxy</a> | 
+	    <a href="freetype.html">freetype</a> | 
+	    <a href="gfxdraw.html">gfxdraw</a> | 
+	    <a href="midi.html">midi</a> | 
+	    <a href="pixelarray.html">PixelArray</a> | 
+	    <a href="pixelcopy.html">pixelcopy</a> | 
+	    <a href="sndarray.html">sndarray</a> | 
+	    <a href="surfarray.html">surfarray</a> | 
+	    <a href="math.html">math</a>
+	  </p>
+
+	  <p class="bottom"><b>Other</b>:
+	    <a href="camera.html">camera</a> | 
+	    <a href="sdl2_controller.html#module-pygame._sdl2.controller">controller</a> | 
+	    <a href="examples.html">examples</a> | 
+	    <a href="scrap.html">scrap</a> | 
+	    <a href="system.html">system</a> | 
+	    <a href="tests.html">tests</a> | 
+	    <a href="touch.html">touch</a> | 
+	    <a href="pygame.html#module-pygame.version">version</a>
+	  </p>
+</div>
+</div>
+  </div>
+
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+<section id="module-pygame.geometry">
+<span id="pygame-geometry"></span><dl class="definition">
+<dt class="title module sig sig-object">
+<code class="docutils literal notranslate"><span class="pre">pygame.geometry</span></code></dt>
+<dd><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>Experimental Module</strong></p>
+<p><strong>This module is a work in progress. Refrain from relying on any features provided by
+this module, as they are subject to change or removal without prior notice.</strong></p>
+</div>
+<table class="toc docutils align-default">
+<tbody>
+<tr class="row-odd"><td><div class="line"><a class="toc reference external" href="geometry.html#pygame.Circle">pygame.Circle</a></div>
+</td>
+<td>—</td>
+<td>pygame object for representing a circle</td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><span class="summaryline">pygame module for the Circle, Line, and Polygon objects</span></div>
+</div>
+<dl class="py class definition">
+<dt class="sig sig-object py title" id="pygame.Circle">
+<span class="sig-prename descclassname"><span class="pre">pygame.</span></span><span class="sig-name descname"><span class="pre">Circle</span></span><a class="headerlink" href="#pygame.Circle" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><span class="summaryline">pygame object for representing a circle</span></div>
+<div class="line"><span class="signature">Circle((x, y), radius) -&gt; Circle</span></div>
+<div class="line"><span class="signature">Circle(x, y, radius) -&gt; Circle</span></div>
+</div>
+<table class="toc docutils align-default">
+<tbody>
+<tr class="row-odd"><td><div class="line"><a class="toc reference external" href="geometry.html#pygame.Circle.x">pygame.Circle.x</a></div>
+</td>
+<td>—</td>
+<td>center x coordinate of the circle</td>
+</tr>
+<tr class="row-even"><td><div class="line"><a class="toc reference external" href="geometry.html#pygame.Circle.y">pygame.Circle.y</a></div>
+</td>
+<td>—</td>
+<td>center y coordinate of the circle</td>
+</tr>
+<tr class="row-odd"><td><div class="line"><a class="toc reference external" href="geometry.html#pygame.Circle.r">pygame.Circle.r</a></div>
+</td>
+<td>—</td>
+<td>radius of the circle</td>
+</tr>
+<tr class="row-even"><td><div class="line"><a class="toc reference external" href="geometry.html#pygame.Circle.r_sqr">pygame.Circle.r_sqr</a></div>
+</td>
+<td>—</td>
+<td>radius of the circle squared</td>
+</tr>
+<tr class="row-odd"><td><div class="line"><a class="toc reference external" href="geometry.html#pygame.Circle.center">pygame.Circle.center</a></div>
+</td>
+<td>—</td>
+<td>x and y coordinates of the center of the circle</td>
+</tr>
+<tr class="row-even"><td><div class="line"><a class="toc reference external" href="geometry.html#pygame.Circle.diameter">pygame.Circle.diameter</a></div>
+</td>
+<td>—</td>
+<td>diameter of the circle</td>
+</tr>
+<tr class="row-odd"><td><div class="line"><a class="toc reference external" href="geometry.html#pygame.Circle.area">pygame.Circle.area</a></div>
+</td>
+<td>—</td>
+<td>area of the circle</td>
+</tr>
+<tr class="row-even"><td><div class="line"><a class="toc reference external" href="geometry.html#pygame.Circle.circumference">pygame.Circle.circumference</a></div>
+</td>
+<td>—</td>
+<td>circumference of the circle</td>
+</tr>
+<tr class="row-odd"><td><div class="line"><a class="toc reference external" href="geometry.html#pygame.Circle.collidepoint">pygame.Circle.collidepoint</a></div>
+</td>
+<td>—</td>
+<td>test if a point is inside the circle</td>
+</tr>
+<tr class="row-even"><td><div class="line"><a class="toc reference external" href="geometry.html#pygame.Circle.collidecircle">pygame.Circle.collidecircle</a></div>
+</td>
+<td>—</td>
+<td>test if two circles collide</td>
+</tr>
+<tr class="row-odd"><td><div class="line"><a class="toc reference external" href="geometry.html#pygame.Circle.colliderect">pygame.Circle.colliderect</a></div>
+</td>
+<td>—</td>
+<td>checks if a rectangle intersects the circle</td>
+</tr>
+<tr class="row-even"><td><div class="line"><a class="toc reference external" href="geometry.html#pygame.Circle.update">pygame.Circle.update</a></div>
+</td>
+<td>—</td>
+<td>updates the circle position and radius</td>
+</tr>
+<tr class="row-odd"><td><div class="line"><a class="toc reference external" href="geometry.html#pygame.Circle.copy">pygame.Circle.copy</a></div>
+</td>
+<td>—</td>
+<td>returns a copy of the circle</td>
+</tr>
+</tbody>
+</table>
+<p>The <cite>Circle</cite> class provides many useful methods for collision / transform and intersection.
+A <cite>Circle</cite> can be created from a combination of a pair of coordinates that represent
+the center of the circle and a radius. Circles can also be created from python objects that
+are already a <cite>Circle</cite> or have an attribute named &quot;circle&quot;.</p>
+<p>Specifically, to construct a circle you can pass the x, y, and radius values as separate
+arguments or inside a sequence(list or tuple).</p>
+<p>Functions that require a <cite>Circle</cite> argument may also accept these values as Circles:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">radius</span><span class="p">)</span>
+<span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It is important to note that you cannot create degenerate circles, which are circles with
+a radius of 0 or less. If you try to create such a circle, the <cite>Circle</cite> object will not be
+created and an error will be raised. This is because a circle with a radius of 0 or
+less is not a valid geometric object.</p>
+<p>The <cite>Circle</cite> class has both virtual and non-virtual attributes. Non-virtual attributes
+are attributes that are stored in the <cite>Circle</cite> object itself. Virtual attributes are the
+result of calculations that utilize the Circle's non-virtual attributes.</p>
+<p>Here is the list of all the attributes and methods of the Circle class:</p>
+<p><strong>Circle Attributes</strong></p>
+<hr class="docutils" />
+<dl class="py attribute definition">
+<dt class="sig sig-object py title" id="pygame.Circle.x">
+<span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#pygame.Circle.x" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><span class="summaryline">center x coordinate of the circle</span></div>
+<div class="line"><span class="signature">x -&gt; float</span></div>
+</div>
+<p>The <cite>x</cite> coordinate of the center of the circle. It can be reassigned to move the circle.
+Reassigning the <cite>x</cite> attribute will move the circle to the new <cite>x</cite> coordinate.
+The <cite>y</cite> and <cite>r</cite> attributes will not be affected.</p>
+</dd></dl>
+
+<dl class="py attribute definition">
+<dt class="sig sig-object py title" id="pygame.Circle.y">
+<span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#pygame.Circle.y" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><span class="summaryline">center y coordinate of the circle</span></div>
+<div class="line"><span class="signature">y -&gt; float</span></div>
+</div>
+<p>The <cite>y</cite> coordinate of the center of the circle. It can be reassigned to move the circle.
+Reassigning the <cite>y</cite> attribute will move the circle to the new <cite>y</cite> coordinate.
+The <cite>x</cite> and <cite>r</cite> attributes will not be affected.</p>
+</dd></dl>
+
+<dl class="py attribute definition">
+<dt class="sig sig-object py title" id="pygame.Circle.r">
+<span class="sig-name descname"><span class="pre">r</span></span><a class="headerlink" href="#pygame.Circle.r" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><span class="summaryline">radius of the circle</span></div>
+<div class="line"><span class="signature">r -&gt; float</span></div>
+</div>
+<p>It is not possible to set the radius to a negative value. It can be reassigned.
+If reassigned it will only change the radius of the circle.
+The circle will not be moved from its original position.</p>
+</dd></dl>
+
+<dl class="py attribute definition">
+<dt class="sig sig-object py title" id="pygame.Circle.r_sqr">
+<span class="sig-name descname"><span class="pre">r_sqr</span></span><a class="headerlink" href="#pygame.Circle.r_sqr" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><span class="summaryline">radius of the circle squared</span></div>
+<div class="line"><span class="signature">r_sqr -&gt; float</span></div>
+</div>
+<p>It's equivalent to <cite>r*r</cite>. It can be reassigned. If reassigned, the radius
+of the circle will be changed to the square root of the new value.
+The circle will not be moved from its original position.</p>
+</dd></dl>
+
+<dl class="py attribute definition">
+<dt class="sig sig-object py title" id="pygame.Circle.center">
+<span class="sig-name descname"><span class="pre">center</span></span><a class="headerlink" href="#pygame.Circle.center" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><span class="summaryline">x and y coordinates of the center of the circle</span></div>
+<div class="line"><span class="signature">center -&gt; (float, float)</span></div>
+</div>
+<p>It's a tuple containing the <cite>x</cite> and <cite>y</cite> coordinates that represent the center
+of the circle. It can be reassigned. If reassigned, the circle will be moved
+to the new position. The radius will not be affected.</p>
+</dd></dl>
+
+<dl class="py attribute definition">
+<dt class="sig sig-object py title" id="pygame.Circle.diameter">
+<span class="sig-name descname"><span class="pre">diameter</span></span><a class="headerlink" href="#pygame.Circle.diameter" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><span class="summaryline">diameter of the circle</span></div>
+<div class="line"><span class="signature">diameter -&gt; float</span></div>
+</div>
+<p>It's calculated using the <cite>d=2*r</cite> formula. It can be reassigned. If reassigned
+the radius will be changed to half the diameter.
+The circle will not be moved from its original position.</p>
+</dd></dl>
+
+<dl class="py attribute definition">
+<dt class="sig sig-object py title" id="pygame.Circle.area">
+<span class="sig-name descname"><span class="pre">area</span></span><a class="headerlink" href="#pygame.Circle.area" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><span class="summaryline">area of the circle</span></div>
+<div class="line"><span class="signature">area -&gt; float</span></div>
+</div>
+<p>It's calculated using the <cite>area=pi*r*r</cite> formula. It can be reassigned.
+If reassigned the circle radius will be changed to produce a circle with matching
+area. The circle will not be moved from its original position.</p>
+</dd></dl>
+
+<dl class="py attribute definition">
+<dt class="sig sig-object py title" id="pygame.Circle.circumference">
+<span class="sig-name descname"><span class="pre">circumference</span></span><a class="headerlink" href="#pygame.Circle.circumference" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><span class="summaryline">circumference of the circle</span></div>
+<div class="line"><span class="signature">circumference -&gt; float</span></div>
+</div>
+<p>It's calculated using the <cite>circumference=2*pi*r</cite> formula. It can be reassigned.
+If reassigned the circle radius will be changed to produce a circle with matching
+circumference. The circle will not be moved from its original position.</p>
+</dd></dl>
+
+<p><strong>Circle Methods</strong></p>
+<hr class="docutils" />
+<dl class="py method definition">
+<dt class="sig sig-object py title" id="pygame.Circle.collidepoint">
+<span class="sig-name descname"><span class="pre">collidepoint</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pygame.Circle.collidepoint" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><span class="summaryline">test if a point is inside the circle</span></div>
+<div class="line"><span class="signature">collidepoint((x, y)) -&gt; bool</span></div>
+<div class="line"><span class="signature">collidepoint(x, y) -&gt; bool</span></div>
+<div class="line"><span class="signature">collidepoint(Vector2) -&gt; bool</span></div>
+</div>
+<p>The <cite>collidepoint</cite> method tests whether a given point is inside the <cite>Circle</cite>
+(including the edge of the <cite>Circle</cite>). It takes a tuple of (x, y) coordinates, two
+separate x and y coordinates, or a <cite>Vector2</cite> object as its argument, and returns
+<cite>True</cite> if the point is inside the <cite>Circle</cite>, <cite>False</cite> otherwise.</p>
+</dd></dl>
+
+<dl class="py method definition">
+<dt class="sig sig-object py title" id="pygame.Circle.collidecircle">
+<span class="sig-name descname"><span class="pre">collidecircle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pygame.Circle.collidecircle" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><span class="summaryline">test if two circles collide</span></div>
+<div class="line"><span class="signature">collidecircle(Circle) -&gt; bool</span></div>
+<div class="line"><span class="signature">collidecircle(x, y, radius) -&gt; bool</span></div>
+<div class="line"><span class="signature">collidecircle((x, y), radius) -&gt; bool</span></div>
+</div>
+<p>The <cite>collidecircle</cite> method tests whether two <cite>Circle</cite> objects overlap. It takes either
+a <cite>Circle</cite> object, a tuple of (x, y) coordinates and a radius, or separate x and y
+coordinates and a radius as its argument, and returns <cite>True</cite> if any portion of the two
+<cite>Circle</cite> objects overlap, <cite>False</cite> otherwise.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If this method is called with a <cite>Circle</cite> object that is the same as the <cite>Circle</cite>
+it is called on, it will always return <cite>True</cite>.</p>
+</div>
+</dd></dl>
+
+<dl class="py method definition">
+<dt class="sig sig-object py title" id="pygame.Circle.colliderect">
+<span class="sig-name descname"><span class="pre">colliderect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pygame.Circle.colliderect" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><span class="summaryline">checks if a rectangle intersects the circle</span></div>
+<div class="line"><span class="signature">colliderect(Rect) -&gt; bool</span></div>
+<div class="line"><span class="signature">colliderect((x, y, width, height)) -&gt; bool</span></div>
+<div class="line"><span class="signature">colliderect(x, y, width, height) -&gt; bool</span></div>
+<div class="line"><span class="signature">colliderect((x, y), (width, height)) -&gt; bool</span></div>
+</div>
+<p>The <cite>colliderect</cite> method tests whether a given rectangle intersects the <cite>Circle</cite>. It
+takes either a <cite>Rect</cite> object, a tuple of (x, y, width, height) coordinates, or separate
+x, y coordinates and width, height as its argument. Returns <cite>True</cite> if any portion
+of the rectangle overlaps with the <cite>Circle</cite>, <cite>False</cite> otherwise.</p>
+</dd></dl>
+
+<dl class="py method definition">
+<dt class="sig sig-object py title" id="pygame.Circle.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pygame.Circle.update" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><span class="summaryline">updates the circle position and radius</span></div>
+<div class="line"><span class="signature">update((x, y), radius) -&gt; None</span></div>
+<div class="line"><span class="signature">update(x, y, radius) -&gt; None</span></div>
+</div>
+<p>The <cite>update</cite> method allows you to set the position and radius of a <cite>Circle</cite> object in
+place. This method takes either a tuple of (x, y) coordinates, two separate x and
+y coordinates, and a radius as its arguments, and it always returns <cite>None</cite>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is equivalent(behaviour wise) to the following code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">circle</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+<span class="n">circle</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+<span class="n">circle</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="n">radius</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py method definition">
+<dt class="sig sig-object py title" id="pygame.Circle.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pygame.Circle.copy" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><span class="summaryline">returns a copy of the circle</span></div>
+<div class="line"><span class="signature">copy() -&gt; Circle</span></div>
+</div>
+<p>The <cite>copy</cite> method returns a new <cite>Circle</cite> object having the same position and radius
+as the original <cite>Circle</cite> object. The function takes no arguments and returns the
+new <cite>Circle</cite> object.</p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+<br /><br />
+<hr />
+<a href="https://github.com/pygame-community/pygame-ce/edit/main/docs/reST/ref\geometry.rst" rel="nofollow">Edit on GitHub</a>
+            <div class="clearer"></div>
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="gfxdraw.html" title="pygame.gfxdraw"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="freetype.html" title="pygame.freetype"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pygame-ce v2.4.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygame.geometry</span></code></a></li>
+    <script type="text/javascript" src="https://www.pygame.org/comment/jquery.plugin.docscomments.js"></script>
+
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2000-2022, pygame developers, 2023 pygame-ce developers.
+    </div>
+  </body>
+</html>

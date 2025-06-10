@@ -1,0 +1,15 @@
+../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ex.c:127:19:HAL_FLASHEx_Erase	9
+../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ex.c:232:19:HAL_FLASHEx_Erase_IT	6
+../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ex.c:304:19:HAL_FLASHEx_OBProgram	11
+../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ex.c:375:6:HAL_FLASHEx_OBGetConfig	4
+../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ex.c:509:13:FLASH_MassErase	2
+../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ex.c:555:6:FLASH_PageErase	1
+../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ex.c:597:6:FLASH_FlushCaches	5
+../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ex.c:652:26:FLASH_OB_WRPConfig	4
+../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ex.c:727:26:FLASH_OB_RDPConfig	2
+../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ex.c:771:26:FLASH_OB_UserConfig	15
+../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ex.c:989:26:FLASH_OB_PCROPConfig	3
+../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ex.c:1117:13:FLASH_OB_GetWRP	3
+../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ex.c:1158:17:FLASH_OB_GetRDP	3
+../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ex.c:1184:17:FLASH_OB_GetUser	1
+../Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ex.c:1207:13:FLASH_OB_GetPCROP	2

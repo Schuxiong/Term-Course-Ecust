@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>轮播示例</title>
+  <style>
+    body,
+    html {
+      height: 100%;
+      margin: 0;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .carousel-wrapper {
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex; 
+    align-items: center; 
+    
+    }
+
+    .list-container {
+      float: left;
+      width: 200px;
+     
+      box-sizing: border-box;
+      padding: 20px;
+      height: 100%;
+    }
+
+    .list {
+      padding: 20px;
+      list-style: none;
+      margin: 20;
+      border: 2px solid #ccc;
+      height: 100%;
+    }
+
+    .list-item {
+      padding: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      border-bottom: 2px solid #ccc;
+    }
+
+    .list-item:hover {
+      background-color: #f0f0f0;
+    }
+
+    .arrow {
+      display: none;
+    }
+
+    .list-item:hover .arrow {
+      display: inline-block;
+    }
+
+    .arrow::after {
+      content: '\2192';
+      margin-left: 5px;
+    }
+
+    .carousel-container {
+      float: left;
+      width: 200px;
+      
+      box-sizing: border-box;
+      padding: 20px;
+      height: 100%;
+    }
+
+    .slides {
+      display: flex;
+      text-align: center;
+      flex-direction: column;
+      margin: 20;
+      padding: 30px;
+      transition: transform 0.5s ease;
+      height: 100%;
+    }
+
+    .slide {
+      text-align: center;
+      display: none;
+      margin: 20;
+      padding-top: 70px;
+      padding-bottom: 70px;
+      
+      border: 2px solid #ccc;
+    }
+
+    .return-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 10px;
+      background-color: #ccc;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <button class="return-button">返回首页</button>
+
+  <div class="container">
+    <div class="carousel-wrapper">
+      <div class="list-container">
+        <ul class="list">
+          <li class="list-item">Lucas<span class="arrow"></span></li>
+          <li class="list-item">Aki<span class="arrow"></span></li>
+          <li class="list-item">Jessica<span class="arrow"></span></li>
+        </ul>
+      </div>
+      <div class="carousel-container">
+        <div class="slides">
+          <div class="slide">Lucas</div>
+          <div class="slide">Aki</div>
+          <div class="slide">Jessica</div>
+        </div>
+      </div>
+      <div style="clear: both;"></div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      //点击返回按钮返回首页
+      $('.return-button').click(function () {
+        window.location.href = 'demo.html';
+      });
+
+      //轮播容器和轮播项
+      const slides = $('.slides');
+      const slideWidth = slides.height();
+      let currentIndex = 0;
+      let intervalId;
+
+      function updateSlidePosition() {
+        slides.css('transform', `translateY(-${currentIndex * slideWidth}px)`);
+      }
+
+      function showCurrentSlide() {
+        const currentSlide = slides.children().eq(currentIndex);
+        currentSlide.css('display', 'block');
+      }
+
+      function hideAllSlides() {
+        slides.children().css('display', 'none');
+      }
+
+      function startCarousel() {
+        intervalId = setInterval(() => {
+          hideAllSlides();
+          currentIndex = (currentIndex + 1) % slides.children().length;
+          showCurrentSlide();
+        }, 1000);
+      }
+
+      // 停止轮播
+      function stopCarousel() {
+        clearInterval(intervalId);
+      }
+
+      // 鼠标悬停和事件监听器
+      $('.list-item').mouseenter(function () {
+        hideAllSlides();
+        currentIndex = $(this).index();
+        showCurrentSlide();
+        stopCarousel();
+      }).mouseleave(function () {
+        startCarousel();
+      });
+
+      // 初始
+      startCarousel();
+    });
+  </script>
+
+</body>
+
+</html>

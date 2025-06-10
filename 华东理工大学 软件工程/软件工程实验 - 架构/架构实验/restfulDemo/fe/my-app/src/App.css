@@ -1,0 +1,72 @@
+body {
+  margin: 0px;
+}
+
+.App {
+  min-height: 100vh;
+  margin: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: #f5f5f5;
+}
+
+h1 {
+  font-size: 10rem;
+  color: rgb(179, 131, 226);
+  opacity: 0.4;
+  margin-top: 1em;
+}
+
+#form {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  width: 400px;
+}
+
+input {
+  box-sizing: border-box;
+  width: 100%;
+  font-size: 2rem;
+  padding: 1rem;
+  padding-left: 2rem;
+  border: 0;
+}
+
+input::placeholder {
+  color: #b5b5b5;
+}
+
+input:focus {
+  outline-color: rgb(179, 131, 226);
+}
+
+#todos {
+  margin: 0;
+  padding: 0;
+}
+
+.todo {
+  list-style: none;
+  box-sizing: border-box;
+  width: 100%;
+  font-size: 1.5rem;
+  padding: 1rem;
+  padding-left: 2rem;
+  border-top: 2px solid #e5e5e5;
+  background-color: white;
+  cursor: pointer;
+}
+
+.todo.finished {
+  color: #b5b5b5;
+  text-decoration: line-through;
+}
+
+small {
+  margin: 80px auto;
+  color: #b5b5b5;
+  text-align: center;
+  font-size: small;
+  line-height: 1.2rem;
+}

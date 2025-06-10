@@ -1,0 +1,31 @@
+-- 插入随机数据到PurchaseRecords表
+INSERT INTO PurchaseRecords (RecordID, CustomerID, ProductID, PurchaseDate, Quantity)
+SELECT
+    NEWID() AS RecordID,
+    C.CustomerID,
+    P.ProductID,
+    DATEADD(day, -ABS(CHECKSUM(NEWID())) % 365, GETDATE()) AS PurchaseDate,
+    ABS(CHECKSUM(NEWID())) % 10 + 1 AS Quantity
+FROM
+    Customers C
+    CROSS JOIN Products P
+
+-- 随机生成 AssociationRules 表的数据
+INSERT INTO AssociationRules (AntecedentProductID, ConsequentProductID, Confidence)
+SELECT
+    A.ProductID AS AntecedentProductID,
+    B.ProductID AS ConsequentProductID,
+    CAST(RAND() AS VARCHAR(50)) -- 生成随机 confidence，范围在 0 到 1 之间
+FROM
+    Products A
+    CROSS JOIN Products B
+WHERE
+    A.ProductID <> B.ProductID; -- 排除自身关联的情况
+
+-- 查看生成的数据
+SELECT * FROM AssociationRules;
+
+-- 查看插入的数据
+SELECT * FROM PurchaseRecords;
+
+

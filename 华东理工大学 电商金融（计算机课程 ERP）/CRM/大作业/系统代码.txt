@@ -1,0 +1,181 @@
+import tkinter as tk
+import pyodbc
+import os
+from PIL import Image, ImageTk
+
+# 请根据你的数据库信息进行相应的修改
+server = 'LAPTOP-J6L5VO5K'
+database = 'CRM'
+username = 'CRMtest'
+password = '12345678'
+
+# 连接到 SQL Server 数据库
+conn = pyodbc.connect(f'DRIVER={{SQL Server}};SERVER={server};DATABASE={database};UID={username};PWD={password}')
+
+# 创建游标
+cursor = conn.cursor()
+
+# 全局变量
+product_id_entry = None
+product_info_text = None
+product_listbox = None
+customer_id_entry = None
+root = None  # 添加全局变量 root
+photo = None  # 添加全局变量 photo
+canvas = None  # 添加全局变量 canvas
+
+# 商品基本信息介绍
+def show_product_info():
+    global root, canvas  # 使用全局变量 canvas
+
+    product_info_text.delete(1.0, tk.END)  # 清空商品信息文本框
+
+    product_id = product_id_entry.get()
+    query = f"SELECT * FROM Products WHERE ProductID = '{product_id}'"
+    cursor.execute(query)
+    result = cursor.fetchone()
+
+    if result:
+        info = f"\nProduct Information:\nProductID: {result.ProductID}\nProductName: {result.ProductName}\nDescription: {result.Description}\nPrice: {result.Price}\n"
+
+        # 显示文本信息
+        product_info_text.insert(tk.END, info)
+
+        # 显示图片
+        pic_path = result.pic
+        if pic_path:
+            pic_path = os.path.normpath(pic_path)
+            try:
+                image = Image.open(pic_path)
+                photo = ImageTk.PhotoImage(image)
+
+                global canvas  # 使用全局变量 canvas
+                if canvas:
+                    canvas.destroy()  # 删除现有的 canvas
+
+                # 创建新的 Canvas，并使用 grid 布局
+                canvas = tk.Canvas(root, width=300, height=200)
+
+                canvas.grid(row=1, column=2, rowspan=3, padx=10)  # 设置 grid 布局参数
+
+                canvas.create_image(0, 0, anchor=tk.NW, image=photo)
+
+            except Exception as e:
+                print("Error loading image:", e)
+        else:
+            product_info_text.insert(tk.END, "No image available.")
+
+# 商品列表
+def show_product_list():
+    product_listbox.delete(0, tk.END)  # 清空商品列表
+
+    query = "SELECT ProductID, ProductName FROM Products"
+    cursor.execute(query)
+    products = cursor.fetchall()
+
+    for product in products:
+        product_listbox.insert(tk.END, f"{product.ProductID} - {product.ProductName}")
+# 关联算法推荐
+def recommendation_by_association(customer_id):
+    recommended_products = []
+
+    query = f"SELECT distinct ConsequentProductID FROM AssociationRules WHERE AntecedentProductID IN (SELECT ProductID FROM PurchaseRecords WHERE CustomerID = '{customer_id}') AND Confidence > 0.4"
+    cursor.execute(query)
+    results = cursor.fetchall()
+
+    for result in results:
+        recommended_products.append(result.ConsequentProductID)
+
+    return recommended_products
+
+# 最近邻算法推荐
+def recommendation_by_nearest_neighbor(customer_id):
+    recommended_products = []
+
+    query = f"SELECT DISTINCT ProductID FROM PurchaseRecords WHERE CustomerID IN (SELECT DISTINCT CustomerID FROM PurchaseRecords WHERE ProductID IN (SELECT ProductID FROM PurchaseRecords WHERE CustomerID = '{customer_id}')) AND CustomerID != '{customer_id}'"
+    cursor.execute(query)
+    results = cursor.fetchall()
+
+    for result in results:
+        recommended_products.append(result.ProductID)
+
+    return recommended_products
+
+# 关闭数据库连接
+def close_connection():
+    conn.close()
+
+# 示例调用
+def main():
+    global product_id_entry, product_info_text, product_listbox, customer_id_entry, root
+
+    root = tk.Tk()
+    root.title("Recommendation System")
+
+    tk.Label(root, text="Enter CustomerID:").grid(row=0, column=0, pady=5)
+    customer_id_entry = tk.Entry(root)
+    customer_id_entry.grid(row=0, column=1, pady=5)
+
+    tk.Label(root, text="Enter ProductID:").grid(row=1, column=0, pady=5)
+    product_id_entry = tk.Entry(root)
+    product_id_entry.grid(row=1, column=1, pady=5)
+
+    tk.Button(root, text="Show Product Information", command=show_product_info).grid(row=2, column=0, columnspan=2, pady=5)
+
+    tk.Label(root, text="Product Information:").grid(row=3, column=0, columnspan=2, pady=5)
+    product_info_text = tk.Text(root, width=50, height=10)
+    product_info_text.grid(row=4, column=0, columnspan=2, pady=5)
+
+    tk.Button(root, text="Show Product List", command=show_product_list).grid(row=5, column=0, columnspan=2, pady=5)
+
+    tk.Label(root, text="Product List:").grid(row=6, column=0, columnspan=2, pady=5)
+    product_listbox = tk.Listbox(root, selectmode=tk.SINGLE, width=50, height=10)
+    product_listbox.grid(row=7, column=0, columnspan=2, pady=5)
+
+    scrollbar = tk.Scrollbar(root, command=product_listbox.yview)
+    scrollbar.grid(row=7, column=2, sticky='ns')  # 放在 product_listbox 右侧
+
+    product_listbox.config(yscrollcommand=scrollbar.set)
+
+    def on_product_select(event):
+        selected_index = product_listbox.curselection()
+        if selected_index:
+            selected_product = product_listbox.get(selected_index)
+            selected_product_id = selected_product.split(" - ")[0]
+            product_id_entry.delete(0, tk.END)
+            product_id_entry.insert(0, selected_product_id)
+            show_product_info()
+
+    product_listbox.bind("<ButtonRelease-1>", on_product_select)
+
+    tk.Button(root, text="Association Recommendation", command=fetch_association_recommendation, width=30, height=2).grid(row=8, column=0, columnspan=2, pady=5)
+    tk.Button(root, text="Nearest Neighbor Recommendation", command=fetch_nearest_neighbor_recommendation, width=30, height=2).grid(row=9, column=0, columnspan=2, pady=5)
+
+    tk.Button(root, text="Exit", command=root.destroy).grid(row=10, column=0, columnspan=2, pady=5)
+
+    root.mainloop()
+
+    # 获取关联推荐并显示在列表框中
+def fetch_association_recommendation():
+    customer_id = customer_id_entry.get()  # 获取用户输入的客户ID
+    recommended_products = recommendation_by_association(customer_id)
+    product_listbox.delete(0, tk.END)
+    for product_id in recommended_products:
+        product_listbox.insert(tk.END, f"{product_id}")
+
+# 获取最近邻推荐并显示在列表框中
+def fetch_nearest_neighbor_recommendation():
+    customer_id = customer_id_entry.get()  # 获取用户输入的客户ID
+    recommended_products = recommendation_by_nearest_neighbor(customer_id)
+    product_listbox.delete(0, tk.END)
+    for product_id in recommended_products:
+        product_listbox.insert(tk.END, f"{product_id}")
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except pyodbc.Error as e:
+        print("SQL Server error:", e)
+    finally:
+        close_connection()

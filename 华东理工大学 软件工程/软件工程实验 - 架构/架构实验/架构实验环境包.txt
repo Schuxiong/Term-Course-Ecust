@@ -1,0 +1,4 @@
+需要Navicat，VSCode，Jdk，Maven，Mysql，Node.js
+
+链接：https://pan.baidu.com/s/1hZAf5wAATSqwddE6ztDB2w 
+提取码：urlu 

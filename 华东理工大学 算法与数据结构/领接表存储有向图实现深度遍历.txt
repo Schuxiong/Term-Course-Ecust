@@ -1,0 +1,110 @@
+#include <stdio.h >
+#include <stdlib.h>
+typedef char ElementType;
+#define MAXSIZE 10;
+#define Qsize 100;
+
+//定义边结点
+typedef struct EdgeNode
+{
+	int adjvex;//存放邻接的点 在 顶点表的下标
+	struct EdgeNode* next;//指向下一个临界点的边结点
+	int weight;//权重值
+}EdgeNode;
+
+//顶点结点定义
+typedef struct VexNode
+{
+	ElementType data;//存储顶点名称和信息
+	EdgeNode* firstedge;//边表头指针
+}VexNode;
+
+//领接表数据类型
+typedef struct Graph
+{
+	VexNode VexList[10];//顶点表
+	int n, e;
+}Graph;
+
+//在图G中查找顶点v，存在顶点数组中的下标，不存在返回-1
+int LocateVex(Graph g, ElementType v)
+{
+	int i;
+	for (i = 0; i < g.n; i++)
+	{
+		if (g.VexList[i].data == v)
+			return i;
+	}
+	return -1;
+}
+
+int visited[10];/*访问标志数组*/
+
+void DFS(Graph g, int i)
+{
+	EdgeNode* p; //printf ("%3c", g.VexList[i].data); 访问第i个顶点
+	visited[i] = 1;
+	p = g.VexList[i].firstedge;
+	while (p != NULL)
+	{
+		if (visited[p->adjvex] == 0)
+			DFS(g, p->adjvex);
+		p = p->next;
+	}
+}
+
+void print(Graph g)//打印图信息
+{
+	int i;
+	EdgeNode* p;
+	for (i = 0; i < g.n; i++)
+	{
+		printf("\n%4c", g.VexList[i].data);
+		p = g.VexList[i].firstedge;
+		while (p != NULL)
+		{
+			printf(" %d", p->adjvex);
+			p = p->next;
+		}
+		printf("\n");
+	}
+}
+
+void createGraph(Graph* g)
+{
+	int i, j, k;
+	ElementType v1, v2;
+	EdgeNode* s;
+	scanf_s("%d", &g->n);
+	getchar();
+	for (i = 0; i < g->n; i++)
+	{
+		scanf_s("%c", &g->VexList[i].data,40);//构造顶点信息
+		g->VexList[i].firstedge = NULL;
+		getchar();
+	}
+
+	for (k = 0; k < 7; k++)
+	{
+		scanf_s("%c %c", &v1,40, &v2,40); getchar();//输入一条边的两个顶点
+		i = LocateVex(*g, v1);
+		j = LocateVex(*g, v2);
+		if (i >= 0 && j >= 0)
+		{
+			//建立有向图的邻接表
+			s = (EdgeNode*)malloc(sizeof(EdgeNode));
+			s->adjvex = j;
+			s->next = g->VexList[i].firstedge;
+			g->VexList[i].firstedge = s;
+		}
+	}
+}
+
+int main()
+{
+	Graph g;
+	createGraph(&g);
+	DFS(g,10 );
+	print(g);
+	return 0;
+}
