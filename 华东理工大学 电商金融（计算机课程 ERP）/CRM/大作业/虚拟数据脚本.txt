@@ -1,0 +1,50 @@
+import pyodbc
+from faker import Faker
+import random
+import uuid  # 用于生成唯一标识符
+
+# 连接到 SQL Server 数据库
+conn = pyodbc.connect('DRIVER={SQL Server};'
+                      'SERVER=LAPTOP-J6L5VO5K;'
+                      'DATABASE=CRM;'
+                      'UID=CRMtest;'
+                      'PWD=12345678')
+
+# 创建游标
+cursor = conn.cursor()
+
+# 初始化 Faker 对象
+fake = Faker()
+
+# 生成模拟数据并插入 Products 表
+for _ in range(100):  # 生成10个商品
+    product_name = fake.word()
+    description = fake.text()[:50] 
+    price = round(random.uniform(10, 1000), 2)
+    product_pic = fake.image_url()
+    product_id = str(uuid.uuid4())
+
+    query = f"INSERT INTO Products (ProductName, Description, Price, ProductPic,ProductID) VALUES (?, ?, ?, ?, ?)"
+    cursor.execute(query, (product_name, description, price, product_pic,product_id))
+
+# 生成模拟数据并插入 Customers 表
+for _ in range(50):  # 生成5个客户
+    customer_name = fake.name()
+    customer_id = str(uuid.uuid4())
+    query = f"INSERT INTO Customers (CustomerName,CustomerID) VALUES (?,?)"
+    cursor.execute(query, (customer_name,customer_id))
+
+# 生成模拟数据并插入 PurchaseRecords 表
+products = [row[0] for row in cursor.execute("SELECT ProductID FROM Products")]
+customers = [row[0] for row in cursor.execute("SELECT CustomerID FROM Customers")]
+
+
+
+
+# 提交事务
+conn.commit()
+
+# 关闭数据库连接
+conn.close()
+
+print("done")

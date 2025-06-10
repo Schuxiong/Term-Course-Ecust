@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>A*算法求解八数码</title>
+</head>
+<body>
+    <h1 id="title">A* 算法求解八数码</h1>
+    <div id="container">
+        <button id="pos0" class="numblock">
+            1
+        </button><button id="pos1" class="numblock">
+            2
+        </button><button id="pos2" class="numblock">
+            3
+        </button><button id="pos3" class="numblock">
+            4
+        </button><button id="pos4" class="numblock">
+            5
+        </button><button id="pos5" class="numblock">
+            6
+        </button><button id="pos6" class="numblock">
+            7
+        </button><button id="pos7" class="numblock">
+            8
+        </button><button id="pos8" class="numblock">
+            &nbsp;
+        </button>
+    </div>
+    <div id="controller">
+        <button id="begin8_1">八数码(h1)</button>
+        <button id="begin8_2">八数码(h2)</button>
+        <button id="begin9_1">九数码(h1)</button>
+        <button id="begin9_2">九数码(h2)</button>
+    </div>
+    <div id="resetcontroller">
+        <button id="reset8">重置八数码</button>
+        <button id="reset9">重置九数码</button>
+    </div>
+    <div id="resultcontainer">
+        <h4 id="resTitle">输出结果显示</h4>
+        <textarea id="result" cols="50" rows="25" readonly="true" resize="false"></textarea>
+    </div>
+
+    <script type="text/javascript" src="js/bashuma.js"></script>
+    <style type="text/css">
+        .numblock {
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            margin: 1px;
+            padding: 0;
+            font-size: 26pt;
+            outline: none;
+            background-color: white;
+            border-radius: 10px;
+            border-color: lightgrey;
+        }
+
+        #title {
+            width: 400px;
+            margin: 40px auto;
+            position: relative;
+            text-align: center;
+        }
+
+        #container {
+            width: 260px;
+            height: 260px;
+            margin: 0 auto;
+            position: relative;
+            text-align: center;
+        }
+
+        #controller {
+            width: 500px;
+            margin: 20px auto;
+            position: relative;
+            text-align: center;
+        }
+
+        #controller > button {
+            background-color: rgb(46,205,113);
+            color: white;
+            border-radius: 10px;
+            border: 2px;
+            width: 100px;
+            height: 30px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        #resetcontroller {
+            width: 400px;
+            margin: 20px auto;
+            position: relative;
+            text-align: center;
+        }
+
+        #resetcontroller > button {
+            background-color: rgb(76,139,245);
+            color: white;
+            border-radius: 10px;
+            border: 2px;
+            width: 100px;
+            height: 30px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        #resultcontainer{
+            margin: 5px auto;
+            position: relative;
+            text-align: center;
+        }
+
+        #result {
+            resize: none;
+        }
+    </style>
+</body>
+</html>

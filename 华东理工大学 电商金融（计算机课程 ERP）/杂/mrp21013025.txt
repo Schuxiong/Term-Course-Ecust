@@ -1,0 +1,115 @@
+from datetime import datetime, time, timedelta
+import tkinter as tk
+from tkinter import ttk
+from tkcalendar import DateEntry
+import pyodbc
+import math
+
+conn = pyodbc.connect('DRIVER={SQL Server};SERVER=LAPTOP-J6L5VO5K;DATABASE=ERP;UID=LucasTest;PWD=12345678')
+
+#def calculate_demand(product_quantity, component, loss_rate, process_inventory, material_inventory):
+   #return product_quantity * component * (1 + loss_rate) - process_inventory - material_inventory
+
+def calculate_demand(product_quantity, component, loss_rate, process_inventory, material_inventory):
+    required_quantity = product_quantity * component / (1 - loss_rate)
+    demand = required_quantity - process_inventory - material_inventory
+    return max(0, math.ceil(demand))
+
+def calculate_dates(base_date, op_leadtime, item_leadtime, sup_leadtime):
+    return base_date - timedelta(days=op_leadtime + item_leadtime + sup_leadtime)
+
+
+
+# 定义一个函数，用于递归计算和显示子材料的需求
+def calculate_mrp_recursive(parent_material, product_quantity, completion_date, level=0, process_inventory=0, material_inventory=0):
+    cursor = conn.cursor()
+    cursor.execute("SELECT SubMaterial, AllocatType, Component, Lossrate, ProcessInventory, MaterialInventory, OPleadtime, ITemleadtime, Supleadtime FROM MTABLE_efinancing WHERE ParentMaterial = ?", (parent_material,))
+    material_requirements = cursor.fetchall()
+
+    result = []  # 用于存储子材料的需求信息
+
+    if material_requirements is not None:
+        for sub_material, allocat_type, component, loss_rate, process_inventory, material_inventory, op_leadtime, item_leadtime, sup_leadtime in material_requirements:
+            demand = calculate_demand(product_quantity, component, loss_rate, process_inventory, material_inventory)
+            order_date = calculate_dates(completion_date, op_leadtime, item_leadtime, sup_leadtime)
+
+            result.append((sub_material, allocat_type, demand, order_date, level, process_inventory, material_inventory))  # 返回一个元组，包含所需的信息和 level
+
+            # 递归计算和显示子材料的需求
+            result.extend(calculate_mrp_recursive(sub_material, demand, order_date, level + 1, process_inventory, material_inventory))
+
+    return result
+
+
+def add_order():
+    product_name = prod_name_entry.get()
+    product_account_need = int(prod_account_need_entry.get())
+    departure_time = departure_time_entry.get_date()
+
+    if departure_time is None:
+        mrp_result_text.delete(1.0, tk.END)
+        mrp_result_text.insert(tk.END, "Please provide a valid departure date.")
+        return
+
+    formatted_date = departure_time.strftime('%Y-%m-%d')
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO Orderlist (Product_Name, Account_Need, Time) VALUES (?, ?, ?)", (product_name, str(product_account_need), formatted_date))
+    conn.commit()
+
+    order_table.insert("", "end", values=(product_name, product_account_need, formatted_date))  # 添加订单信息到订单列表
+
+    # 初始的 process_inventory 和 material_inventory 都为0
+    process_inventory = 0
+    material_inventory = 0
+
+    mrp_results = calculate_mrp_recursive(product_name, product_account_need, departure_time)
+    mrp_result_text.delete(1.0, tk.END)
+    mrp_result_text.insert(tk.END, f"MRP Calculation for {product_name}:\n")
+
+    for result in mrp_results:
+        sub_material, allocat_type, demand, order_date, level, process_inventory, material_inventory = result
+        mrp_result_text.insert(tk.END, "  " * level + f"Sub-Material: {sub_material}\n")
+        mrp_result_text.insert(tk.END, "  " * level + f"AllocatType: {allocat_type}\n")
+        mrp_result_text.insert(tk.END, "  " * level + f"Demand: {demand}\n")
+        mrp_result_text.insert(tk.END, "  " * level + f"Order Date: {order_date.strftime('%Y-%m-%d')}\n")
+
+    prod_name_entry.delete(0, tk.END)
+    prod_account_need_entry.delete(0, tk.END)
+
+
+
+app = tk.Tk()
+app.title("MRP Calculator")
+
+tk.Label(app, text="Product Name:").grid(row=0, column=0)
+prod_name_entry = tk.Entry(app)
+prod_name_entry.grid(row=0, column=1)
+
+tk.Label(app, text="Account Need:").grid(row=1, column=0)
+prod_account_need_entry = tk.Entry(app)
+prod_account_need_entry.grid(row=1, column=1)
+
+tk.Label(app, text="Departure Time:").grid(row=2, column=0)
+departure_time_entry = DateEntry(app, date_pattern='yy-mm-dd')
+departure_time_entry.grid(row=2, column=1)
+
+add_button = tk.Button(app, text="Add Order", command=add_order)
+add_button.grid(row=3, column=0, columnspan=2)
+
+order_label = tk.Label(app, text="Order List:")
+order_label.grid(row=4, column=0)
+
+order_table = ttk.Treeview(app, columns=("Product Name", "Account Need", "Departure Time"), show="headings")
+order_table.heading("Product Name", text="Product Name")
+order_table.heading("Account Need", text="Account Need")
+order_table.heading("Departure Time", text="Departure Time")
+order_table.grid(row=5, column=0, columnspan=2, padx=10, pady=10)
+
+mrp_result_label = tk.Label(app, text="MRP Calculation Result:")
+mrp_result_label.grid(row=6, column=0)
+
+mrp_result_text = tk.Text(app, width=50, height=10)
+mrp_result_text.grid(row=7, column=0, columnspan=2, padx=10, pady=10)
+
+app.mainloop()
+

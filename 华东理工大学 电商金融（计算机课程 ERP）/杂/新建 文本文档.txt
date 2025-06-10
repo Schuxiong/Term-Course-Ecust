@@ -1,0 +1,48 @@
+表AssociationRules：
+RuleID	varchar(50)
+AntecedentProductID	varchar(50)
+ConsequentProductID	varchar(50)
+Confidence	varchar(50)
+[UDF-1]	varchar(50)
+[UDF-2]	varchar(50)
+[UDF-3]	int
+[UDF-4]	date
+	
+表Customers：
+CustomerID	varchar(50)
+CustomerName	varchar(50)
+[UDF-1]	varchar(50)
+[UDF-2]	date
+[UDF-3]	int
+
+表OutlierRecords：
+OutlierID	varchar(50)
+CustomerID	varchar(50)
+Reason	varchar(50)
+Reason1	varchar(MAX)
+[UDF-1]	varchar(50)
+[UDF-2]	int
+[UDF-3]	date
+	
+表Prodcuts：
+ProductID	varchar(50)
+ProductName	varchar(50)
+Description	varchar(50)
+Price	varchar(50)
+ProductPic	varchar(50)
+[UDF-1]	varchar(50)
+[UDF-2]	varchar(50)
+[UDF-3]	int
+[UDF-4]	date
+	
+表PurchaseRecords:
+RecordID	varchar(50)
+CustomerID	varchar(50)
+ProductID	varchar(50)
+PurchaseDate	date
+Quantity	int
+[UDF-1]	varchar(50)
+[UDF-2]	varchar(50)
+[UDF-3]	varchar(50)
+	
+	

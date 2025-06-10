@@ -1,0 +1,322 @@
+#VRML V2.0 utf8
+
+WorldInfo {
+  info	"GLView VRML 2.0 library"
+}
+
+# Toggle Button 
+
+
+PROTO Button [
+	
+	eventIn SFBool set_state
+
+	# state 
+	field 	SFBool state FALSE
+
+	# outputs 
+
+	eventOut SFBool state_changed
+	eventOut SFBool stateInverted_changed
+	eventOut SFTime startTime
+	eventOut SFTime stopTime
+
+	# properties 
+	exposedField SFColor onColor 0.0 1.0 0.0
+	exposedField SFColor offColor 1.0 0.0 0.0
+	exposedField SFColor baseColor 0.0 0.0 1.0
+
+	] {
+	Group {
+	children [
+		DEF TOUCH TouchSensor {}
+		Transform {
+			rotation 1 0 0 1.5707963
+			translation 0 0 -.005
+
+		children Shape {
+			appearance Appearance {
+				material Material { diffuseColor IS baseColor }
+				}
+			geometry Cylinder { height .015 radius .02 }
+			}
+		}
+		DEF INOUT Transform {
+			rotation 1 0 0 1.5707963
+			translation 0 0 .005
+		children [
+#			DEF TOUCH TouchSensor {}
+			DEF COLOR Switch {
+				whichChoice 0
+			choice [
+				Shape {
+				appearance Appearance {
+				material Material { diffuseColor IS offColor }
+					}
+				geometry DEF CYL Cylinder {	height .0145 radius .015 }
+				}
+				Shape {
+				appearance Appearance {
+				material Material { diffuseColor IS onColor }
+					}
+				geometry 
+					##Sphere { radius 0.015 }
+					USE CYL
+				}
+			]
+			}
+		]
+		}
+		DEF CONTROL Script {
+			eventIn SFBool set_state IS set_state
+			eventIn SFTime touched
+			field SFBool state IS state
+			
+			eventOut SFBool state_changed IS state_changed
+			eventOut SFBool stateInverted_changed IS stateInverted_changed
+
+			eventOut SFTime startTime IS startTime
+			eventOut SFTime stopTime  IS stopTime
+
+
+			field SFVec3f push_pos 0 0 -.004
+			field SFVec3f in_pos 0 0 0
+			field SFVec3f out_pos 0 0 .005
+			eventOut SFVec3f pos_changed
+			eventOut SFInt32 choice_changed
+			url [ "vrmlscript:
+
+			function initialize()
+			{
+			if (state) {
+				pos_changed = in_pos;
+				choice_changed = 1;
+			} else {
+				pos_changed = out_pos;
+				choice_changed = 0;
+				}
+			}
+
+			function touched(t)
+			{
+
+			state = !state;
+
+			if (state) {
+				pos_changed = in_pos;
+				choice_changed = 1;
+				startTime = t;
+			} else {
+				pos_changed = out_pos;
+				choice_changed = 0;
+				stopTime=t;
+			}
+			
+			state_changed = state;
+			stateInverted_changed = !state;
+
+			}
+
+			function set_state(value,t)
+			{
+				state = value;
+				state_changed = value;
+				stateInverted_changed = !state;
+				if (value) {
+					pos_changed = in_pos;
+					choice_changed = 1;
+					startTime = t;
+				} else {
+					pos_changed = out_pos;
+					choice_changed = 0;
+					stopTime=t;
+				}
+			}
+			"]
+		}
+	]
+	}
+ROUTE TOUCH.touchTime TO CONTROL.touched
+ROUTE CONTROL.choice_changed TO COLOR.set_whichChoice
+ROUTE CONTROL.pos_changed TO INOUT.set_translation
+}
+
+
+
+## geometry group 
+DEF geometry Group {
+children [
+	
+	Box {}
+	Cone {}
+	Cylinder {}
+	Sphere {}
+	
+	DEF more Group {
+	
+	children [
+		ElevationGrid {}
+		Extrusion {}
+		Text { }
+		PointSet {}
+		IndexedLineSet {}
+		IndexedFaceSet {}
+
+	]
+	}
+	DEF properties Group {
+	
+	children [
+		Color {}
+		Coordinate {}
+		Normal {}
+		TextureCoordinate {}
+		FontStyle {}
+	]
+	}
+
+]
+}
+
+
+DEF materials Group {
+children [
+	
+	DEF defaultMaterial Material { }
+
+	DEF GoldMaterial Material {
+	    ambientIntensity	0.0227
+	    diffuseColor	0.3143 0.0744 0
+	    specularColor	1 0.767 0
+	    shininess	0.04849
+	 }
+
+
+]
+}
+
+DEF textures Group {
+children [
+
+	ImageTexture {}
+	MovieTexture {}
+	PixelTexture {}
+	TextureTransform {}
+
+
+]
+}
+
+DEF appearances Group {
+children [
+
+	DEF defaultAppearance Appearance {
+	  material	USE defaultMaterial
+	}
+
+	DEF Gold Appearance {
+	  material	USE GoldMaterial
+	}
+
+]
+}
+
+DEF groups Group {
+children [
+	Transform { }
+	Group {}
+	Collision {}
+	Anchor {}
+	Inline {}
+	Billboard {}
+	Switch {}
+	LOD {} 
+]
+}
+
+DEF objects Group {
+children [
+	DEF Box Shape {
+		appearance USE defaultAppearance 
+		geometry Box {}
+	}
+	DEF UnitBox Shape {
+		appearance USE defaultAppearance 
+		geometry Box {}
+	}
+	DEF Sphere Shape {
+		appearance USE defaultAppearance 
+		geometry Sphere {}
+	}
+	DEF Cone Shape {
+		appearance USE defaultAppearance 
+		geometry Cone {}
+	}
+	DEF ToggleButton Button {
+	}
+
+
+
+]
+}
+
+DEF interpolators Group {
+children [
+	ColorInterpolator {}
+	ScalarInterpolator {}
+	PositionInterpolator {}
+	OrientationInterpolator {}
+	
+	CoordinateInterpolator {}
+	NormalInterpolator {}
+
+]
+}
+DEF sensors Group {
+children [
+	TimeSensor {}
+	TouchSensor {}
+	ProximitySensor {} 
+	VisibilitySensor {}
+
+	PlaneSensor {}
+	CylinderSensor {}
+	SphereSensor {}
+
+]
+}
+
+DEF other Group {
+children [
+	
+	WorldInfo {}
+	NavigationInfo {}
+	Viewpoint {}
+	
+	Fog {}
+	Background {}
+	DirectionalLight {}
+
+	PointLight {}
+	SpotLight {}
+
+	AudioClip { }
+	
+	DEF glview-extensions Group {
+	children [
+		Fog2 {}
+		BspGroup {}
+		BspTree {}
+		MenuSensor {}
+		Occlusion {}
+		Inclusion {}
+
+	]
+	}
+
+
+]
+}
+
+
+

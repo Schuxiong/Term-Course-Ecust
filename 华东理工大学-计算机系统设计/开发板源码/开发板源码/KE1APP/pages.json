@@ -1,0 +1,77 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/devreg",
+			"style": {
+				"navigationBarTitleText": "设备注册"
+			}
+		},
+		{
+			"path": "pages/index/devctrl",
+			"style": {
+				"navigationBarTitleText": "设备监控"
+			}
+		},
+		{
+			"path": "pages/index/devinfo",
+			"style": {
+				"navigationBarTitleText": "设备信息"
+			}
+		},
+		{
+			"path": "pages/index/devhistory",
+			"style": {
+				"navigationBarTitleText": "设备历史信息"
+			}
+		},
+		{
+			"path": "pages/index/ledctrl",
+			"style": {
+				"navigationBarTitleText": "LED控制"
+			}
+		},
+		{
+			"path": "pages/index/uchart",
+			"style": {
+				"navigationBarTitleText": "温湿度曲线图"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "KE1",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#7A7E83",
+		"selectedColor": "#007AFF",
+		"borderStyle": "black",
+		"backgroundColor": "#F8F8F8",
+		"list": [{
+				"pagePath": "pages/index/devreg",
+				"iconPath": "static/admin_off.png",
+				"selectedIconPath": "static/admin_on.png",
+				"text": "注册"
+			},
+			{
+				"pagePath": "pages/index/devinfo",
+				"iconPath": "static/admin_off.png",
+				"selectedIconPath": "static/admin_on.png",
+				"text": "查询"
+			},
+			{
+				"pagePath": "pages/index/devctrl",
+				"iconPath": "static/admin_off.png",
+				"selectedIconPath": "static/admin_on.png",
+				"text": "监控"
+			},
+			{
+				"pagePath": "pages/index/ledctrl",
+				"iconPath": "static/admin_off.png",
+				"selectedIconPath": "static/admin_on.png",
+				"text": "LED"
+			}
+		]
+	}
+}

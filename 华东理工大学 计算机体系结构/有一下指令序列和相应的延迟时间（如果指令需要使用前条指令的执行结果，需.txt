@@ -1,0 +1,37 @@
+有一下指令序列和相应的延迟时间（如果指令需要使用前条指令的执行结果，需要等待的时钟周期数）
+
+                                                            Latencies beyond single cycle
+loop：        LD        F2，0（RX）          Memory LD                              +4
+I0：        DIVD        F8，F2，F0          Memory SD                              +1
+I1：        MULTD     F2，F6，F2          Interger ADD ，SUB                 +0
+I2：        LD        F4，0（Ry）          Branches                                    +1
+I3：        ADDD   F4，F0，F4            ADDD                                          +1
+I4：        ADDD    F10，F8，F2          MULTD                            +5
+I5：        ADDI        Rx，Rx，#8         DIVD                             +12
+I6：        ADDI        Rx，Ry，#8         
+I7：        SD        F4，0（Ry）        
+I8           SUB      R20，R4，Rx
+I9：        BNZ      R20，loop        
+
+考虑多发射设计。假设有两条流水线，每个时钟周期每条流水线都可以开始执行指令。流水线前端的取指令和指令译码带宽很充裕，不会导致执行停顿。执行结果可以立刻转发到需要的部件。只有真实的数据相关才会导致流水线停顿。请分析一个循环需要花费多少个时钟周期？
+
+
+
+对每个指令的分析：
+
+1. LD F2, 0(RX)：Memory LD，延迟 +4
+2. DIVD F8, F2, F0：Memory SD，延迟 +1
+3. MULTD F2, F6, F2：Integer ADD，SUB，延迟 +0
+4. LD F4, 0(RY)：Branches，延迟 +1
+5. ADDD F4, F0, F4：ADDD，延迟 +1
+6. ADDD F10, F8, F2：MULTD，延迟 +5
+7. ADDI RX, RX, #8：DIVD，延迟 +12
+8. ADDI RX, RY, #8
+9. SD F4, 0(RY)
+10. SUB R20, R4, RX
+11. BNZ R20, loop
+
+第7条指令（ADDI RX, RX, #8）和第10条指令（SUB R20, R4, RX）之间存在真实的数据相关，因为第10条指令依赖于第7条指令的结果。
+多发射设计，在同一时钟周期内同时执行这两条指令。
+循环的总时钟周期数取决于最长的延迟路径。在这里，最长的路径是从第7条指令到第9条指令（SD F4, 0(RY)）。总延迟为4 + 1 + 0 + 1 + 1 + 5 + 12 = 24 个时钟周期。
+所以，循环需要花费24个时钟周期。

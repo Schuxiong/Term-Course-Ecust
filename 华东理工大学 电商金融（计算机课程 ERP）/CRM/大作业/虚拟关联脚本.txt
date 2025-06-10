@@ -1,0 +1,61 @@
+import pyodbc
+from faker import Faker
+import random
+
+# 请根据你的数据库信息进行相应的修改
+server = 'LAPTOP-J6L5VO5K'   # 替换成你的 SQL Server 地址
+database = 'CRM'   # 替换成你的数据库名称
+username = 'CRMtest'   # 替换成你的数据库用户名
+password = '12345678'   # 替换成你的数据库密码
+
+# 连接到 SQL Server 数据库
+conn = pyodbc.connect('DRIVER={SQL Server};'
+                      'SERVER=LAPTOP-J6L5VO5K;'
+                      'DATABASE=CRM;'
+                      'UID=CRMtest;'
+                      'PWD=12345678')
+
+
+# 创建游标
+cursor = conn.cursor()
+
+# 生成关联规则
+def generate_association_rules(num_rules=200):
+    fake = Faker()
+
+    for _ in range(num_rules):
+        antecedent_product_id = random_product_id()
+        consequent_product_id = random_product_id()
+
+        # 确保前项和后项商品不同
+        while antecedent_product_id == consequent_product_id:
+            consequent_product_id = random_product_id()
+
+        confidence = round(random.uniform(0.5, 1.0), 2)
+
+        query = f"INSERT INTO AssociationRules (AntecedentProductID, ConsequentProductID, Confidence) VALUES ('{antecedent_product_id}', '{consequent_product_id}', {confidence})"
+        cursor.execute(query)
+        conn.commit()
+
+# 生成随机的产品ID
+def random_product_id():
+    query = "SELECT ProductID FROM Products"
+    cursor.execute(query)
+    product_ids = [row.ProductID for row in cursor.fetchall()]
+    return random.choice(product_ids)
+
+# 关闭数据库连接
+def close_connection():
+    conn.close()
+
+# 示例调用
+try:
+    generate_association_rules()
+    print("Association rules generated successfully.")
+
+except pyodbc.Error as e:
+    print("SQL Server error:", e)
+
+finally:
+    # 关闭数据库连接
+    close_connection()

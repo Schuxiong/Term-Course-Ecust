@@ -1,0 +1,10 @@
+﻿t10.obj : error LNK2005: main 已经在 t1.obj 中定义
+t2.obj : error LNK2005: main 已经在 t1.obj 中定义
+t3.obj : error LNK2005: main 已经在 t1.obj 中定义
+t4.obj : error LNK2005: main 已经在 t1.obj 中定义
+t5.obj : error LNK2005: main 已经在 t1.obj 中定义
+t6.obj : error LNK2005: main 已经在 t1.obj 中定义
+t7.obj : error LNK2005: main 已经在 t1.obj 中定义
+t8.obj : error LNK2005: main 已经在 t1.obj 中定义
+t9.obj : error LNK2005: main 已经在 t1.obj 中定义
+C:\Users\74140\Desktop\学期课程\算法设计与分析\algorithm\x64\Debug\algorithm.exe : fatal error LNK1169: 找到一个或多个多重定义的符号

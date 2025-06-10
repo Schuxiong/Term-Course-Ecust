@@ -1,0 +1,4 @@
+﻿  AD fruit.cpp
+C:\Users\74140\Desktop\学期课程\算法设计与分析\test2\test2\AD fruit.cpp(7,31): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+C:\Users\74140\Desktop\学期课程\算法设计与分析\test2\test2\AD fruit.cpp(8,31): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+  test2.vcxproj -> C:\Users\74140\Desktop\学期课程\算法设计与分析\test2\x64\Debug\test2.exe

@@ -1,0 +1,6 @@
+../Core/Src/adc.c:33:6:MX_ADC1_Init	4
+../Core/Src/adc.c:81:6:HAL_ADC_MspInit	3
+../Core/Src/adc.c:127:6:HAL_ADC_MspDeInit	2
+../Core/Src/adc.c:153:7:adc_get_x_value	2
+../Core/Src/adc.c:166:7:adc_get_y_value	2
+../Core/Src/adc.c:179:6:adc_start	1

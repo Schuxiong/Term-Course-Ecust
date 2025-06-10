@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "fuccy-wash.py", "人工智能\fuccy-wash.py.pyproj", "{F34AD3D7-A8DD-482D-8E01-DA2107FF317C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F34AD3D7-A8DD-482D-8E01-DA2107FF317C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F34AD3D7-A8DD-482D-8E01-DA2107FF317C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5DA7F75D-CF56-4503-B729-F0E2A84865EA}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,11 @@
+﻿  最大子序和.cpp
+C:\Users\74140\Desktop\vscode\Project1\Project1\最大子序和.cpp(68,1): fatal  error C1071: 在注释中遇到意外的文件结束
+  数组.cpp
+C:\Users\74140\Desktop\vscode\Project1\Project1\数组.cpp(3,24): error C2061: 语法错误: 标识符“vector”
+C:\Users\74140\Desktop\vscode\Project1\Project1\数组.cpp(5,7): error C2065: “num”: 未声明的标识符
+C:\Users\74140\Desktop\vscode\Project1\Project1\数组.cpp(8,23): error C2065: “nums”: 未声明的标识符
+C:\Users\74140\Desktop\vscode\Project1\Project1\数组.cpp(10,8): error C2065: “nums”: 未声明的标识符
+C:\Users\74140\Desktop\vscode\Project1\Project1\数组.cpp(10,23): error C2065: “nums”: 未声明的标识符
+C:\Users\74140\Desktop\vscode\Project1\Project1\数组.cpp(11,5): error C2065: “nums”: 未声明的标识符
+C:\Users\74140\Desktop\vscode\Project1\Project1\数组.cpp(11,21): error C2065: “nums”: 未声明的标识符
+  正在生成代码...

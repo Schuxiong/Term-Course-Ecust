@@ -1,0 +1,19 @@
+cd 改变目录
+cd .. 退回
+pwd 显示当前所在的目录路径
+ls(||) 列出当前目录的所有文件 两个|更加详细
+touch 新建一个文件
+rm 删除一个问价
+mkdir 新建一个目录 文件夹
+rm -r 删除一个文件夹
+mv 移动文件夹(统一目录下) mv from to
+reset 重新初始化终端
+clear 清屏
+history 查看历史命令
+help 帮助
+exit 退出
+#注释
+
+查看git配置
+git  config -l
+git  config --global --list

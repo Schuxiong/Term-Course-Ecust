@@ -1,0 +1,10 @@
+19:14:52 **** Build of configuration Debug for project KE1_RotaryEncoder ****
+make -j12 all 
+arm-none-eabi-size   KE1_RotaryEncoder.elf 
+   text	   data	    bss	    dec	    hex	filename
+  20684	    112	   2040	  22836	   5934	KE1_RotaryEncoder.elf
+Finished building: default.size.stdout
+ 
+
+19:14:53 Build Finished. 0 errors, 0 warnings. (took 868ms)
+

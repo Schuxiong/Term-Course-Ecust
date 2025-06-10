@@ -1,0 +1,38 @@
+T1：
+	给定一个大小为n的数组nums，返回其中的多数元素。多数元素是指在数组中出现次数大于⌊n/2⌋的元素。假设数组是非空的，并且给定的数组总是存在多数元素。
+	示例1。输入：[3, 2, 3]；输出：3
+	示例2。输入：[2, 2, 1, 1, 1, 2, 2]；输出：2
+
+具体函数如下，将其完善使得有输入输出：
+
+int count_in_range(int* nums, int target, int lo, int hi)
+{
+	//计算指定范围捏target出现的次数
+	int count = 0;
+	for (int i = lo; i <= hi; ++i)
+	{
+		if (nums[i] == target)
+			++count;
+	}
+}
+
+//递归函数
+int majority_element_rec(int* nums, int lo, int hi)
+{
+	//区间长度为1时，众数即本身
+	if (lo == hi) return nums[lo];
+	int mid = (lo + hi) / 2;//中间索引mid
+	int left_majority = majority_element_rec(nums, lo, mid);//左半部分的众数
+	int right_majority = majority_element_rec(nums, mid + 1, hi);//右边
+
+	if (count_in_range(nums, left_majority, lo, hi) > (hi - lo + 1) / 2)
+		return left_majority;
+	if (count_in_range(nums, right_majority, lo, hi) > (hi - lo + 1) / 2)
+		return right_majority;
+	return -1;//左右都没有多数元素 返回-1
+}
+
+int majortityElement(int* nums, int numSize)
+{
+	return majority_element_rec(nums, 0, numSize - 1);
+}
